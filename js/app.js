@@ -4,7 +4,10 @@ var app = new Vue({
         currentPage: 'dashboard',
         lessons: [],
         cart: [],
-        isDarkMode: false
+        isDarkMode: false,
+        sortAttribute: 'subject',
+        sortOrder: 'ascending',
+        searchQuery: ''
     },
     computed: {
         cartCount: function() {
@@ -36,6 +39,13 @@ var app = new Vue({
     },
     created: function() {
         this.fetchLessons();
+
+        // Load theme from localStorage
+        let savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            this.isDarkMode = true;
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
     },
 
     logout: function() {
@@ -53,5 +63,30 @@ var app = new Vue({
                 document.documentElement.removeAttribute('data-theme');
                 localStorage.setItem('theme', 'light');
             }
+        },
+        addToCart: function(lesson) {
+            if (lesson.spaces === 0) return;
+            
+            let found = false;
+            for (let i = 0; i < this.cart.length; i++) {
+                if (this.cart[i].id === lesson.id) {
+                    this.cart[i].quantity++;
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (!found) {
+                this.cart.push({
+                    id: lesson.id,
+                    subject: lesson.subject,
+                    location: lesson.location,
+                    price: lesson.price,
+                    icon: lesson.icon,
+                    quantity: 1
+                });
+            }
+            
+            lesson.spaces--;
         }
 });
