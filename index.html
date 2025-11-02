@@ -18,17 +18,60 @@
             
             <div class="sidebar-section">
                 <p class="sidebar-label">General</p>
-                <button class="sidebar-item active">
+                <button 
+                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'dashboard'}"
+                    v-on:click="currentPage = 'dashboard'">
                     <i class="fas fa-home"></i> Dashboard
+                </button>
+                <button 
+                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'lessons'}"
+                    v-on:click="currentPage = 'lessons'">
+                    <i class="fas fa-book"></i> All Lessons
+                </button>
+                <button 
+                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'courses'}"
+                    v-on:click="currentPage = 'courses'">
+                    <i class="fas fa-chalkboard-teacher"></i> My Courses
+                </button>
+                <button
+                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'cart'}"
+                    v-on:click="currentPage = 'cart'">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <span class="badge" v-if="cartCount > 0">{{ cartCount }}</span>
+                </button>
+            </div>
+            
+            <div class="sidebar-section">
+                <p class="sidebar-label">Account</p>
+                <button
+                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'settings'}"
+                    v-on:click="currentPage = 'settings'">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+                <button class="sidebar-item" v-on:click="logout">
+                    <i class="fas fa-sign-out-alt"></i> Log out
                 </button>
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
-            <h1>Welcome to OutSmart</h1>
+            <!-- Top Action Bar -->
+            <div class="top-action-bar">
+                <button class="theme-toggle" v-on:click="toggleTheme">
+                    <i v-bind:class="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
+                </button>
+                <button class="icon-btn"><i class="fas fa-bell"></i></button>
+                <div class="profile-pic" v-on:click="currentPage = 'profile'" style="cursor: pointer;">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div v-if="currentPage === 'dashboard'" class="page">
+                <h1>Welcome to OutSmart!</h1>
+            </div>
         </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="js/app.js"></script>
