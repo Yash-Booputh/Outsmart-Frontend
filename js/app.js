@@ -16,6 +16,13 @@ var app = new Vue({
                 total += this.cart[i].quantity;
             }
             return total;
+        },
+        cartTotal: function() {
+            let total = 0;
+            for (let i = 0; i < this.cart.length; i++) {
+                total += this.cart[i].price * this.cart[i].quantity;
+            }
+            return total;
         }
     },
     methods: {
@@ -88,5 +95,52 @@ var app = new Vue({
             }
             
             lesson.spaces--;
+        },
+
+        sortedLessons: function() {
+            let lessonsArray = this.lessons.slice();
+            
+            if (this.searchQuery) {
+                let query = this.searchQuery.toLowerCase();
+                lessonsArray = lessonsArray.filter(function(lesson) {
+                    return lesson.subject.toLowerCase().includes(query) ||
+                           lesson.location.toLowerCase().includes(query) ||
+                           lesson.price.toString().includes(query) ||
+                           lesson.spaces.toString().includes(query);
+                });
+            }
+            
+            let attribute = this.sortAttribute;
+            let order = this.sortOrder;
+            
+            lessonsArray.sort(function(a, b) {
+                let valueA = a[attribute];
+                let valueB = b[attribute];
+                
+                if (typeof valueA === 'string') {
+                    valueA = valueA.toLowerCase();
+                    valueB = valueB.toLowerCase();
+                }
+                
+                if (order === 'ascending') {
+                    return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0);
+                } else {
+                    return valueA < valueB ? 1 : (valueA > valueB ? -1 : 0);
+                }
+            });
+            
+            return lessonsArray;
+        },
+         removeFromCart: function(index) {
+            let item = this.cart[index];
+            
+            for (let i = 0; i < this.lessons.length; i++) {
+                if (this.lessons[i].id === item.id) {
+                    this.lessons[i].spaces += item.quantity;
+                    break;
+                }
+            }
+            
+            this.cart.splice(index, 1);
         }
 });
