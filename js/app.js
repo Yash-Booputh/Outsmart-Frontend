@@ -6,7 +6,7 @@ var app = new Vue({
         isDarkMode: false,
         showLoginModal: false,
         isLoggedIn: false,
-        loginMode: 'login', // 'login' or 'signup'
+        loginMode: 'login',
         loginForm: {
             email: '',
             password: '',
@@ -66,7 +66,9 @@ var app = new Vue({
             timezone: 'GMT'
         },
         currentSlide: 0,
-        slideshowInterval: null
+        slideshowInterval: null,
+        // Backend API URL - CHANGE THIS AFTER DEPLOYMENT
+        apiURL: 'http://localhost:3000/api'
     },
     computed: {
         mascotStyle: function() {
@@ -207,67 +209,48 @@ var app = new Vue({
             this.loginForm.name = '';
         },
         trackMouse: function(event) {
-    // Get modal wrapper position
-    let modalWrapper = event.currentTarget.querySelector('.login-modal-wrapper');
-    if (!modalWrapper) return;
-    
-    let rect = modalWrapper.getBoundingClientRect();
-    
-    // Mouse position relative to viewport
-    let mouseX = event.clientX;
-    let mouseY = event.clientY;
-    
-    // Calculate mascot position on screen
-    let mascotCenterX = rect.left + rect.width / 2 + this.mascotAdjust.x;
-    let mascotCenterY = rect.top + this.mascotAdjust.y + this.mascotAdjust.size / 2;
-    
-    // Eye positions relative to mascot (using percentages)
-    let leftEyeX = mascotCenterX + (this.mascotAdjust.size * (this.pupilControls.leftEyeX - 50) / 100);
-    let leftEyeY = mascotCenterY + (this.mascotAdjust.size * (this.pupilControls.leftEyeY - 50) / 100);
-    let rightEyeX = mascotCenterX + (this.mascotAdjust.size * (50 - this.pupilControls.rightEyeX) / 100);
-    let rightEyeY = mascotCenterY + (this.mascotAdjust.size * (this.pupilControls.rightEyeY - 50) / 100);
-    
-    // Calculate angle for left eye
-    let leftAngle = Math.atan2(mouseY - leftEyeY, mouseX - leftEyeX);
-    
-    // Limit the distance to keep pupils within eye boundaries
-    // Use a smaller move range that's proportional to the eye size
-    let maxDistance = this.mascotAdjust.size * 0.03; // 3% of mascot size
-    let leftDistance = Math.min(maxDistance, Math.hypot(mouseX - leftEyeX, mouseY - leftEyeY) * 0.1);
-    
-    // Calculate angle for right eye
-    let rightAngle = Math.atan2(mouseY - rightEyeY, mouseX - rightEyeX);
-    let rightDistance = Math.min(maxDistance, Math.hypot(mouseX - rightEyeX, mouseY - rightEyeY) * 0.1);
-    
-    // Calculate movement offsets for black pupils
-    let leftOffsetX = Math.cos(leftAngle) * leftDistance;
-    let leftOffsetY = Math.sin(leftAngle) * leftDistance;
-    let rightOffsetX = Math.cos(rightAngle) * rightDistance;
-    let rightOffsetY = Math.sin(rightAngle) * rightDistance;
-    
-    // Set outer (black) pupil positions
-    this.leftPupilStyle = {
-        transform: 'translate(' + leftOffsetX + 'px, ' + leftOffsetY + 'px)'
-    };
-    
-    this.rightPupilStyle = {
-        transform: 'translate(' + rightOffsetX + 'px, ' + rightOffsetY + 'px)'
-    };
-    
-    // Inner (white) pupils move LESS - they stay inside the black pupil
-    // Multiply by 0.3 so they move less and stay contained
-    let innerLeftOffsetX = Math.cos(leftAngle) * leftDistance * 0.3;
-    let innerLeftOffsetY = Math.sin(leftAngle) * leftDistance * 0.3;
-    let innerRightOffsetX = Math.cos(rightAngle) * rightDistance * 0.3;
-    let innerRightOffsetY = Math.sin(rightAngle) * rightDistance * 0.3;
-    
-    this.leftInnerPupilStyle = {
-        transform: 'translate(' + innerLeftOffsetX + 'px, ' + innerLeftOffsetY + 'px)'
-    };
-    
-    this.rightInnerPupilStyle = {
-        transform: 'translate(' + innerRightOffsetX + 'px, ' + innerRightOffsetY + 'px)'
-    };
+            let modalWrapper = event.currentTarget.querySelector('.login-modal-wrapper');
+            if (!modalWrapper) return;
+            
+            let rect = modalWrapper.getBoundingClientRect();
+            let mouseX = event.clientX;
+            let mouseY = event.clientY;
+            let mascotCenterX = rect.left + rect.width / 2 + this.mascotAdjust.x;
+            let mascotCenterY = rect.top + this.mascotAdjust.y + this.mascotAdjust.size / 2;
+            let leftEyeX = mascotCenterX + (this.mascotAdjust.size * (this.pupilControls.leftEyeX - 50) / 100);
+            let leftEyeY = mascotCenterY + (this.mascotAdjust.size * (this.pupilControls.leftEyeY - 50) / 100);
+            let rightEyeX = mascotCenterX + (this.mascotAdjust.size * (50 - this.pupilControls.rightEyeX) / 100);
+            let rightEyeY = mascotCenterY + (this.mascotAdjust.size * (this.pupilControls.rightEyeY - 50) / 100);
+            let leftAngle = Math.atan2(mouseY - leftEyeY, mouseX - leftEyeX);
+            let maxDistance = this.mascotAdjust.size * 0.03;
+            let leftDistance = Math.min(maxDistance, Math.hypot(mouseX - leftEyeX, mouseY - leftEyeY) * 0.1);
+            let rightAngle = Math.atan2(mouseY - rightEyeY, mouseX - rightEyeX);
+            let rightDistance = Math.min(maxDistance, Math.hypot(mouseX - rightEyeX, mouseY - rightEyeY) * 0.1);
+            let leftOffsetX = Math.cos(leftAngle) * leftDistance;
+            let leftOffsetY = Math.sin(leftAngle) * leftDistance;
+            let rightOffsetX = Math.cos(rightAngle) * rightDistance;
+            let rightOffsetY = Math.sin(rightAngle) * rightDistance;
+            
+            this.leftPupilStyle = {
+                transform: 'translate(' + leftOffsetX + 'px, ' + leftOffsetY + 'px)'
+            };
+            
+            this.rightPupilStyle = {
+                transform: 'translate(' + rightOffsetX + 'px, ' + rightOffsetY + 'px)'
+            };
+            
+            let innerLeftOffsetX = Math.cos(leftAngle) * leftDistance * 0.3;
+            let innerLeftOffsetY = Math.sin(leftAngle) * leftDistance * 0.3;
+            let innerRightOffsetX = Math.cos(rightAngle) * rightDistance * 0.3;
+            let innerRightOffsetY = Math.sin(rightAngle) * rightDistance * 0.3;
+            
+            this.leftInnerPupilStyle = {
+                transform: 'translate(' + innerLeftOffsetX + 'px, ' + innerLeftOffsetY + 'px)'
+            };
+            
+            this.rightInnerPupilStyle = {
+                transform: 'translate(' + innerRightOffsetX + 'px, ' + innerRightOffsetY + 'px)'
+            };
         },
         hideMascot: function() {
             this.mascotAdjust.y = -18;
@@ -277,14 +260,12 @@ var app = new Vue({
         },
         handleLogin: function() {
             if (this.loginMode === 'login') {
-                // Login logic
                 if (this.loginForm.email && this.loginForm.password) {
                     console.log('Logging in:', this.loginForm.email);
                     this.isLoggedIn = true;
                     this.showLoginModal = false;
                     localStorage.setItem('isLoggedIn', 'true');
 
-                    // Update user profile with login email
                     if (!this.userProfile.email) {
                         this.userProfile.email = this.loginForm.email;
                         localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
@@ -294,14 +275,12 @@ var app = new Vue({
                     this.loginForm.password = '';
                 }
             } else {
-                // Signup logic
                 if (this.loginForm.name && this.loginForm.email && this.loginForm.password) {
                     console.log('Signing up:', this.loginForm.email);
                     this.isLoggedIn = true;
                     this.showLoginModal = false;
                     localStorage.setItem('isLoggedIn', 'true');
 
-                    // Populate user profile with signup data
                     this.userProfile.name = this.loginForm.name;
                     this.userProfile.email = this.loginForm.email;
                     localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
@@ -319,7 +298,6 @@ var app = new Vue({
             this.currentPage = 'dashboard';
         },
         addToCart: function(lesson) {
-            // Check if user is logged in
             if (!this.isLoggedIn) {
                 this.showLoginModal = true;
                 return;
@@ -329,7 +307,7 @@ var app = new Vue({
             
             let found = false;
             for (let i = 0; i < this.cart.length; i++) {
-                if (this.cart[i].id === lesson.id) {
+                if (this.cart[i].id === lesson._id) {
                     this.cart[i].quantity++;
                     found = true;
                     break;
@@ -338,7 +316,7 @@ var app = new Vue({
             
             if (!found) {
                 this.cart.push({
-                    id: lesson.id,
+                    id: lesson._id,
                     subject: lesson.subject,
                     location: lesson.location,
                     price: lesson.price,
@@ -353,7 +331,7 @@ var app = new Vue({
             let item = this.cart[index];
             
             for (let i = 0; i < this.lessons.length; i++) {
-                if (this.lessons[i].id === item.id) {
+                if (this.lessons[i]._id === item.id) {
                     this.lessons[i].spaces += item.quantity;
                     break;
                 }
@@ -374,28 +352,84 @@ var app = new Vue({
                 orderData.spaces.push(this.cart[i].quantity);
             }
             
-            console.log('Order submitted:', orderData);
-            
-            this.orderConfirmed = true;
-            this.cart = [];
-            this.checkoutInfo.name = '';
-            this.checkoutInfo.phone = '';
+            // POST to backend (4%)
+            fetch(this.apiURL + '/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Order submission failed');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                console.log('Order submitted:', data);
+                
+                // Update lesson spaces in backend (3%)
+                for (let i = 0; i < this.cart.length; i++) {
+                    let item = this.cart[i];
+                    let lesson = this.lessons.find(function(l) { 
+                        return l._id === item.id; 
+                    });
+                    
+                    if (lesson) {
+                        this.updateLessonSpaces(item.id, lesson.spaces);
+                    }
+                }
+                
+                this.orderConfirmed = true;
+                this.cart = [];
+                this.checkoutInfo.name = '';
+                this.checkoutInfo.phone = '';
+            }.bind(this))
+            .catch(function(error) {
+                console.error('Error submitting order:', error);
+                alert('Failed to submit order. Please try again.');
+            });
+        },
+        updateLessonSpaces: function(lessonId, newSpaces) {
+            // PUT to update spaces (3%)
+            fetch(this.apiURL + '/lessons/' + lessonId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ spaces: newSpaces })
+            })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Failed to update lesson spaces');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                console.log('Lesson spaces updated:', data);
+            })
+            .catch(function(error) {
+                console.error('Error updating lesson spaces:', error);
+            });
         },
         fetchLessons: function() {
-            this.lessons = [
-                { id: 1, subject: 'Math', location: 'London', price: 100, spaces: 5, icon: 'fas fa-calculator' },
-                { id: 2, subject: 'Math', location: 'Oxford', price: 100, spaces: 5, icon: 'fas fa-calculator' },
-                { id: 3, subject: 'English', location: 'London', price: 100, spaces: 5, icon: 'fas fa-book' },
-                { id: 4, subject: 'English', location: 'York', price: 90, spaces: 5, icon: 'fas fa-book' },
-                { id: 5, subject: 'Music', location: 'Bristol', price: 90, spaces: 5, icon: 'fas fa-music' },
-                { id: 6, subject: 'Science', location: 'Manchester', price: 95, spaces: 5, icon: 'fas fa-flask' },
-                { id: 7, subject: 'Art', location: 'Liverpool', price: 85, spaces: 5, icon: 'fas fa-palette' },
-                { id: 8, subject: 'History', location: 'Cambridge', price: 80, spaces: 5, icon: 'fas fa-landmark' },
-                { id: 9, subject: 'Geography', location: 'Edinburgh', price: 75, spaces: 5, icon: 'fas fa-globe' },
-                { id: 10, subject: 'PE', location: 'Birmingham', price: 70, spaces: 5, icon: 'fas fa-running' },
-                { id: 11, subject: 'Drama', location: 'Leeds', price: 80, spaces: 5, icon: 'fas fa-theater-masks' },
-                { id: 12, subject: 'IT', location: 'London', price: 110, spaces: 5, icon: 'fas fa-laptop-code' }
-            ];
+            // GET lessons from backend (3%)
+            fetch(this.apiURL + '/lessons')
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch lessons');
+                    }
+                    return response.json();
+                })
+                .then(function(data) {
+                    this.lessons = data;
+                }.bind(this))
+                .catch(function(error) {
+                    console.error('Error fetching lessons:', error);
+                    // Fallback to empty array or show error message
+                    this.lessons = [];
+                }.bind(this));
         },
         enableProfileEdit: function() {
             this.userProfileBackup = JSON.parse(JSON.stringify(this.userProfile));
@@ -457,34 +491,30 @@ var app = new Vue({
         }
     },
     created: function() {
+        // Fetch lessons from backend on app load
         this.fetchLessons();
 
-        // Load theme from localStorage
         let savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             this.isDarkMode = true;
             document.documentElement.setAttribute('data-theme', 'dark');
         }
 
-        // Load login state from localStorage
         let savedLogin = localStorage.getItem('isLoggedIn');
         if (savedLogin === 'true') {
             this.isLoggedIn = true;
         }
 
-        // Load user profile from localStorage
         let savedProfile = localStorage.getItem('userProfile');
         if (savedProfile) {
             this.userProfile = JSON.parse(savedProfile);
         }
 
-        // Load settings from localStorage
         let savedSettings = localStorage.getItem('userSettings');
         if (savedSettings) {
             this.settings = JSON.parse(savedSettings);
         }
 
-        // Start slideshow
         this.startSlideshow();
     },
     beforeDestroy: function() {
