@@ -237,7 +237,7 @@ var app = new Vue({
             
             this.rightPupilStyle = {
                 transform: 'translate(' + rightOffsetX + 'px, ' + rightOffsetY + 'px)'
-            };
+            }; 
             
             let innerLeftOffsetX = Math.cos(leftAngle) * leftDistance * 0.3;
             let innerLeftOffsetY = Math.sin(leftAngle) * leftDistance * 0.3;
