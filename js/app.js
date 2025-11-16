@@ -110,16 +110,8 @@ var app = new Vue({
         sortedLessons: function () {
             let lessonsArray = this.lessons.slice();
 
-            if (this.searchQuery) {
-                let query = this.searchQuery.toLowerCase();
-                lessonsArray = lessonsArray.filter(function (lesson) {
-                    return lesson.subject.toLowerCase().includes(query) ||
-                        lesson.location.toLowerCase().includes(query) ||
-                        lesson.price.toString().includes(query) ||
-                        lesson.spaces.toString().includes(query);
-                });
-            }
-
+            // Don't filter here anymore - backend handles search
+            // Just sort the lessons
             let attribute = this.sortAttribute;
             let order = this.sortOrder;
 
@@ -293,6 +285,29 @@ var app = new Vue({
                 }
             }
         },
+        searchLessons: function() {
+    // If search query is empty, fetch all lessons
+    if (!this.searchQuery || this.searchQuery.trim() === '') {
+        this.fetchLessons();
+        return;
+    }
+    
+    // Call backend search API (3% - Frontend fetch)
+    fetch(this.apiURL + '/search?q=' + encodeURIComponent(this.searchQuery))
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Search failed');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            this.lessons = data;
+        }.bind(this))
+        .catch(function(error) {
+            console.error('Error searching lessons:', error);
+            alert('Search failed. Please try again.');
+        });
+},
         logout: function () {
             this.isLoggedIn = false;
             localStorage.removeItem('isLoggedIn');

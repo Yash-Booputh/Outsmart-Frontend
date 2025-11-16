@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,47 +9,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
     <div id="app">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-    <img src="assets/images/mascot_logo.png" alt="OutSmart Mascot" class="logo-mascot">
-    <div class="logo-text">
-        <h2 class="fw-bolder">OUTSMART</h2>
-        <p class="logo-slogan">Hoot for Knowledge!</p>
-    </div>
-</div>
-            
+                <img src="assets/images/mascot_logo.png" alt="OutSmart Mascot" class="logo-mascot">
+                <div class="logo-text">
+                    <h2 class="fw-bolder">OUTSMART</h2>
+                    <p class="logo-slogan">Hoot for Knowledge!</p>
+                </div>
+            </div>
+
             <div class="sidebar-section">
                 <p class="sidebar-label">General</p>
-                <button 
-                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'dashboard'}"
+                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'dashboard'}"
                     v-on:click="currentPage = 'dashboard'">
                     <i class="fas fa-home"></i> Dashboard
                 </button>
-                <button 
-                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'lessons'}"
+                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'lessons'}"
                     v-on:click="currentPage = 'lessons'">
                     <i class="fas fa-book"></i> All Lessons
                 </button>
-                <button 
-                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'courses'}"
+                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'courses'}"
                     v-on:click="currentPage = 'courses'">
                     <i class="fas fa-chalkboard-teacher"></i> My Courses
                 </button>
-                <button
-                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'cart'}"
+                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'cart'}"
                     v-on:click="currentPage = 'cart'">
                     <i class="fas fa-shopping-cart"></i> Cart
                     <span class="badge" v-if="cartCount > 0">{{ cartCount }}</span>
                 </button>
             </div>
-            
+
             <div class="sidebar-section">
                 <p class="sidebar-label">Account</p>
-                <button
-                    v-bind:class="{'sidebar-item': true, 'active': currentPage === 'settings'}"
+                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'settings'}"
                     v-on:click="currentPage = 'settings'">
                     <i class="fas fa-cog"></i> Settings
                 </button>
@@ -78,8 +75,10 @@
                     <div class="row align-items-center">
                         <div class="col-lg-6">
                             <h1 class="hero-title">Welcome, {{ userProfile.name || 'Guest' }}!</h1>
-                            <p class="hero-subtitle">Discover after-school lessons that inspire learning and creativity</p>
-                            <p class="hero-description">Browse our extensive catalog of engaging lessons designed for students. From Math to Music, find the perfect class to enhance your skills.</p>
+                            <p class="hero-subtitle">Discover after-school lessons that inspire learning and creativity
+                            </p>
+                            <p class="hero-description">Browse our extensive catalog of engaging lessons designed for
+                                students. From Math to Music, find the perfect class to enhance your skills.</p>
                             <div class="hero-actions">
                                 <button class="btn btn-primary btn-lg me-3" v-on:click="currentPage = 'lessons'">
                                     <i class="fas fa-book me-2"></i> Browse Lessons
@@ -93,7 +92,8 @@
                             <div class="slideshow-container">
                                 <div class="slideshow-wrapper">
                                     <div class="slide fade" v-bind:class="{'active': currentSlide === 0}">
-                                        <img src="assets/images/slide1.jpg" alt="Interactive Learning" class="slide-image">
+                                        <img src="assets/images/slide1.jpg" alt="Interactive Learning"
+                                            class="slide-image">
                                         <div class="slide-overlay">
                                             <h3>Interactive Learning</h3>
                                             <p>Engaging lessons that make learning fun</p>
@@ -114,7 +114,8 @@
                                         </div>
                                     </div>
                                     <div class="slide fade" v-bind:class="{'active': currentSlide === 3}">
-                                        <img src="assets/images/slide4.jpg" alt="Certified Teachers" class="slide-image">
+                                        <img src="assets/images/slide4.jpg" alt="Certified Teachers"
+                                            class="slide-image">
                                         <div class="slide-overlay">
                                             <h3>Certified Teachers</h3>
                                             <p>Learn from qualified professionals</p>
@@ -122,7 +123,9 @@
                                     </div>
                                 </div>
                                 <div class="slideshow-dots">
-                                    <span class="dot" v-for="(slide, index) in 4" v-bind:key="index" v-bind:class="{'active': currentSlide === index}" v-on:click="currentSlide = index"></span>
+                                    <span class="dot" v-for="(slide, index) in 4" v-bind:key="index"
+                                        v-bind:class="{'active': currentSlide === index}"
+                                        v-on:click="currentSlide = index"></span>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +142,8 @@
                                     <i class="fas fa-chalkboard-teacher"></i>
                                 </div>
                                 <h4>Expert Teachers</h4>
-                                <p class="text-muted">Learn from qualified and experienced instructors who are passionate about education.</p>
+                                <p class="text-muted">Learn from qualified and experienced instructors who are
+                                    passionate about education.</p>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -148,7 +152,8 @@
                                     <i class="fas fa-clock"></i>
                                 </div>
                                 <h4>Flexible Schedule</h4>
-                                <p class="text-muted">Choose lessons that fit your schedule with multiple time slots and locations available.</p>
+                                <p class="text-muted">Choose lessons that fit your schedule with multiple time slots and
+                                    locations available.</p>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -157,7 +162,8 @@
                                     <i class="fas fa-star"></i>
                                 </div>
                                 <h4>Quality Content</h4>
-                                <p class="text-muted">Access high-quality educational content designed to boost academic performance.</p>
+                                <p class="text-muted">Access high-quality educational content designed to boost academic
+                                    performance.</p>
                             </div>
                         </div>
                     </div>
@@ -227,9 +233,7 @@
                                     <span class="fw-bold text-primary">£{{ lesson.price }}/session</span>
                                     <span class="badge">{{ lesson.spaces }} spaces</span>
                                 </div>
-                                <button 
-                                    class="btn btn-primary w-100" 
-                                    v-on:click="addToCart(lesson)"
+                                <button class="btn btn-primary w-100" v-on:click="addToCart(lesson)"
                                     v-bind:disabled="lesson.spaces === 0">
                                     <i class="fas fa-cart-plus me-2"></i>
                                     {{ lesson.spaces === 0 ? 'Sold Out' : 'Add to Cart' }}
@@ -243,13 +247,14 @@
             <!-- All Lessons Page -->
             <div v-if="currentPage === 'lessons'" class="page">
                 <h2 class="mb-4">All Lessons</h2>
-                
+
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label fw-semibold">Search</label>
-                                <input type="text" class="form-control" placeholder="Search lessons..." v-model="searchQuery">
+                                <input type="text" class="form-control" placeholder="Search lessons..."
+                                    v-model="searchQuery" v-on:input="searchLessons">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label fw-semibold">Sort by</label>
@@ -286,9 +291,7 @@
                                     <span class="fw-bold text-primary">£{{ lesson.price }}/session</span>
                                     <span class="badge">{{ lesson.spaces }} spaces</span>
                                 </div>
-                                <button 
-                                    class="btn btn-primary w-100" 
-                                    v-on:click="addToCart(lesson)"
+                                <button class="btn btn-primary w-100" v-on:click="addToCart(lesson)"
                                     v-bind:disabled="lesson.spaces === 0">
                                     <i class="fas fa-cart-plus me-2"></i>
                                     {{ lesson.spaces === 0 ? 'Sold Out' : 'Add to Cart' }}
@@ -318,7 +321,7 @@
 
             <!-- Profile Page -->
             <div v-if="currentPage === 'profile'" class="page">
-                <h2 class="mb-4">User Profile</h2> 
+                <h2 class="mb-4">User Profile</h2>
 
                 <div class="row">
                     <div class="col-lg-8">
@@ -341,80 +344,53 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">Full Name</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            v-model="userProfile.name"
+                                        <input type="text" class="form-control" v-model="userProfile.name"
                                             v-bind:class="{'is-invalid': profileEditMode && userProfile.name && !isValidProfileName}"
-                                            v-bind:disabled="!profileEditMode"
-                                            placeholder="Enter your full name">
+                                            v-bind:disabled="!profileEditMode" placeholder="Enter your full name">
                                         <div class="invalid-feedback">
                                             Name must contain only letters and spaces
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">Email Address</label>
-                                        <input
-                                            type="email"
-                                            class="form-control"
-                                            v-model="userProfile.email"
-                                            v-bind:disabled="!profileEditMode"
-                                            placeholder="Enter your email">
+                                        <input type="email" class="form-control" v-model="userProfile.email"
+                                            v-bind:disabled="!profileEditMode" placeholder="Enter your email">
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">Phone Number</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            v-model="userProfile.phone"
+                                        <input type="text" class="form-control" v-model="userProfile.phone"
                                             v-bind:class="{'is-invalid': profileEditMode && userProfile.phone && !isValidProfilePhone}"
-                                            v-bind:disabled="!profileEditMode"
-                                            placeholder="Enter your phone number">
+                                            v-bind:disabled="!profileEditMode" placeholder="Enter your phone number">
                                         <div class="invalid-feedback">
                                             Phone must contain only numbers
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">Student ID</label>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            v-model="userProfile.studentId"
-                                            v-bind:disabled="!profileEditMode"
-                                            placeholder="Enter your student ID">
+                                        <input type="text" class="form-control" v-model="userProfile.studentId"
+                                            v-bind:disabled="!profileEditMode" placeholder="Enter your student ID">
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Address</label>
-                                    <textarea
-                                        class="form-control"
-                                        rows="2"
-                                        v-model="userProfile.address"
-                                        v-bind:disabled="!profileEditMode"
-                                        placeholder="Enter your address"></textarea>
+                                    <textarea class="form-control" rows="2" v-model="userProfile.address"
+                                        v-bind:disabled="!profileEditMode" placeholder="Enter your address"></textarea>
                                 </div>
 
                                 <div class="d-flex gap-2 mt-4">
-                                    <button
-                                        v-if="!profileEditMode"
-                                        class="btn btn-primary"
+                                    <button v-if="!profileEditMode" class="btn btn-primary"
                                         v-on:click="enableProfileEdit">
                                         <i class="fas fa-edit me-2"></i> Edit Profile
                                     </button>
-                                    <button
-                                        v-if="profileEditMode"
-                                        class="btn btn-primary"
-                                        v-on:click="saveProfile"
+                                    <button v-if="profileEditMode" class="btn btn-primary" v-on:click="saveProfile"
                                         v-bind:disabled="!canSaveProfile">
                                         <i class="fas fa-save me-2"></i> Save Changes
                                     </button>
-                                    <button
-                                        v-if="profileEditMode"
-                                        class="btn btn-outline-secondary"
+                                    <button v-if="profileEditMode" class="btn btn-outline-secondary"
                                         v-on:click="cancelProfileEdit">
                                         <i class="fas fa-times me-2"></i> Cancel
                                     </button>
@@ -428,28 +404,19 @@
 
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Current Password</label>
-                                    <input
-                                        type="password"
-                                        class="form-control"
-                                        v-model="passwordChange.current"
+                                    <input type="password" class="form-control" v-model="passwordChange.current"
                                         placeholder="Enter current password">
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">New Password</label>
-                                    <input
-                                        type="password"
-                                        class="form-control"
-                                        v-model="passwordChange.new"
+                                    <input type="password" class="form-control" v-model="passwordChange.new"
                                         placeholder="Enter new password">
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Confirm New Password</label>
-                                    <input
-                                        type="password"
-                                        class="form-control"
-                                        v-model="passwordChange.confirm"
+                                    <input type="password" class="form-control" v-model="passwordChange.confirm"
                                         v-bind:class="{'is-invalid': passwordChange.confirm && passwordChange.new !== passwordChange.confirm}"
                                         placeholder="Confirm new password">
                                     <div class="invalid-feedback">
@@ -457,9 +424,7 @@
                                     </div>
                                 </div>
 
-                                <button
-                                    class="btn btn-primary"
-                                    v-on:click="changePassword"
+                                <button class="btn btn-primary" v-on:click="changePassword"
                                     v-bind:disabled="!canChangePassword">
                                     <i class="fas fa-key me-2"></i> Update Password
                                 </button>
@@ -515,7 +480,7 @@
             <!-- Cart Page -->
             <div v-if="currentPage === 'cart'" class="page">
                 <h2 class="mb-4">Shopping Cart</h2>
-                
+
                 <div v-if="cart.length > 0">
                     <div class="row">
                         <div class="col-lg-8 mb-4">
@@ -552,33 +517,27 @@
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
                                     <h4 class="mb-4">Checkout</h4>
-                                    
+
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold">Name</label>
-                                        <input 
-                                            type="text" 
-                                            class="form-control" 
+                                        <input type="text" class="form-control"
                                             v-bind:class="{'is-invalid': checkoutInfo.name && !isValidName}"
-                                            v-model="checkoutInfo.name" 
-                                            placeholder="Enter your name">
+                                            v-model="checkoutInfo.name" placeholder="Enter your name">
                                         <div class="invalid-feedback">
                                             Name must contain only letters
                                         </div>
                                     </div>
-                                    
+
                                     <div class="mb-4">
                                         <label class="form-label fw-semibold">Phone</label>
-                                        <input 
-                                            type="text" 
-                                            class="form-control" 
+                                        <input type="text" class="form-control"
                                             v-bind:class="{'is-invalid': checkoutInfo.phone && !isValidPhone}"
-                                            v-model="checkoutInfo.phone" 
-                                            placeholder="Enter your phone number">
+                                            v-model="checkoutInfo.phone" placeholder="Enter your phone number">
                                         <div class="invalid-feedback">
                                             Phone must contain only numbers
                                         </div>
                                     </div>
-                                    
+
                                     <div class="border-top pt-3 mb-3">
                                         <div class="d-flex justify-content-between mb-2">
                                             <span class="text-muted">Subtotal:</span>
@@ -589,10 +548,8 @@
                                             <span class="fs-5 fw-bold text-primary">£{{ cartTotal }}</span>
                                         </div>
                                     </div>
-                                    
-                                    <button 
-                                        class="btn btn-primary w-100 btn-lg" 
-                                        v-on:click="checkout"
+
+                                    <button class="btn btn-primary w-100 btn-lg" v-on:click="checkout"
                                         v-bind:disabled="!canCheckout">
                                         <i class="fas fa-check me-2"></i> Place Order
                                     </button>
@@ -628,7 +585,8 @@
                                         <p class="text-muted small mb-0">Toggle dark mode theme</p>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" v-model="isDarkMode" v-on:change="toggleTheme">
+                                        <input class="form-check-input" type="checkbox" v-model="isDarkMode"
+                                            v-on:change="toggleTheme">
                                     </div>
                                 </div>
                             </div>
@@ -645,7 +603,8 @@
                                         <p class="text-muted small mb-0">Receive email updates about your orders</p>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" v-model="settings.emailNotifications">
+                                        <input class="form-check-input" type="checkbox"
+                                            v-model="settings.emailNotifications">
                                     </div>
                                 </div>
 
@@ -657,7 +616,8 @@
                                         <p class="text-muted small mb-0">Receive push notifications in browser</p>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" v-model="settings.pushNotifications">
+                                        <input class="form-check-input" type="checkbox"
+                                            v-model="settings.pushNotifications">
                                     </div>
                                 </div>
 
@@ -669,7 +629,8 @@
                                         <p class="text-muted small mb-0">Receive promotional offers and updates</p>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" v-model="settings.marketingEmails">
+                                        <input class="form-check-input" type="checkbox"
+                                            v-model="settings.marketingEmails">
                                     </div>
                                 </div>
                             </div>
@@ -686,7 +647,8 @@
                                         <p class="text-muted small mb-0">Make your profile visible to others</p>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" v-model="settings.profileVisibility">
+                                        <input class="form-check-input" type="checkbox"
+                                            v-model="settings.profileVisibility">
                                     </div>
                                 </div>
 
@@ -698,7 +660,8 @@
                                         <p class="text-muted small mb-0">Let others see when you're online</p>
                                     </div>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" v-model="settings.showOnlineStatus">
+                                        <input class="form-check-input" type="checkbox"
+                                            v-model="settings.showOnlineStatus">
                                     </div>
                                 </div>
 
@@ -746,7 +709,8 @@
                             <div class="card-body p-4">
                                 <h5 class="mb-3">Quick Actions</h5>
 
-                                <button class="btn btn-outline-secondary w-100 mb-2" v-on:click="currentPage = 'profile'">
+                                <button class="btn btn-outline-secondary w-100 mb-2"
+                                    v-on:click="currentPage = 'profile'">
                                     <i class="fas fa-user me-2"></i> Edit Profile
                                 </button>
 
@@ -807,7 +771,8 @@
                         </div>
                         <h2 class="mb-3">Order Confirmed!</h2>
                         <p class="text-muted mb-4">Your order has been successfully submitted.</p>
-                        <button class="btn btn-primary btn-lg px-5" v-on:click="orderConfirmed = false; currentPage = 'dashboard'">
+                        <button class="btn btn-primary btn-lg px-5"
+                            v-on:click="orderConfirmed = false; currentPage = 'dashboard'">
                             <i class="fas fa-home me-2"></i> Back to Dashboard
                         </button>
                     </div>
@@ -816,13 +781,12 @@
         </div>
 
         <!-- Login/Signup Modal -->
-        <div v-if="showLoginModal" class="modal-backdrop-custom" v-on:click="showLoginModal = false" v-on:mousemove="trackMouse">
+        <div v-if="showLoginModal" class="modal-backdrop-custom" v-on:click="showLoginModal = false"
+            v-on:mousemove="trackMouse">
             <div class="login-modal-wrapper">
                 <!-- Mascot behind modal -->
-                <div class="mascot-container" 
-                     v-bind:style="mascotStyle" 
-                     v-on:mouseenter="hideMascot" 
-                     v-on:mouseleave="showMascot">
+                <div class="mascot-container" v-bind:style="mascotStyle" v-on:mouseenter="hideMascot"
+                    v-on:mouseleave="showMascot">
                     <img src="assets/images/mascot.png" alt="OutSmart Mascot" class="mascot-image">
                     <div class="mascot-eyes">
                         <div class="mascot-eye left-eye" v-bind:style="leftEyeStyle">
@@ -844,58 +808,50 @@
                         <h4 class="fw-bold mb-1">OUTSMART</h4>
                         <p class="text-muted mb-0">{{ loginMode === 'login' ? 'Login' : 'Create account' }}</p>
                     </div>
-                    
+
                     <form v-on:submit.prevent="handleLogin">
                         <div class="mb-3" v-if="loginMode === 'signup'">
                             <label class="form-label small text-muted">Name *</label>
-                            <input 
-                                type="text" 
-                                class="form-control form-control-lg" 
-                                v-model="loginForm.name" 
-                                required>
+                            <input type="text" class="form-control form-control-lg" v-model="loginForm.name" required>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label small text-muted">Email *</label>
-                            <input 
-                                type="email" 
-                                class="form-control form-control-lg" 
-                                v-model="loginForm.email" 
-                                required>
+                            <input type="email" class="form-control form-control-lg" v-model="loginForm.email" required>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="form-label small text-muted">Password *</label>
-                            <input 
-                                type="password" 
-                                class="form-control form-control-lg" 
-                                v-model="loginForm.password" 
+                            <input type="password" class="form-control form-control-lg" v-model="loginForm.password"
                                 required>
                         </div>
-                        
+
                         <div class="mb-4" v-if="loginMode === 'login'">
                             <a href="#" class="small text-muted text-decoration-none">Forgotten password?</a>
                         </div>
-                        
+
                         <div class="d-grid mb-3">
                             <button type="submit" class="btn btn-dark btn-lg">
                                 {{ loginMode === 'login' ? 'Login' : 'Sign Up' }}
                                 <i class="fas fa-arrow-right ms-2"></i>
                             </button>
                         </div>
-                        
+
                         <div class="text-center">
-                            <button type="button" class="btn btn-link text-muted small p-0" v-on:click="toggleLoginMode">
-                                {{ loginMode === 'login' ? "Don't have an account? Sign Up" : "Already have an account? Login" }}
+                            <button type="button" class="btn btn-link text-muted small p-0"
+                                v-on:click="toggleLoginMode">
+                                {{ loginMode === 'login' ? "Don't have an account? Sign Up" : "Already have an account?
+                                Login" }}
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <script src="./js/app.js"></script>
 </body>
+
 </html>
