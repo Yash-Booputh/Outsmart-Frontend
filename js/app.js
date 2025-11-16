@@ -285,29 +285,29 @@ var app = new Vue({
                 }
             }
         },
-        searchLessons: function() {
-    // If search query is empty, fetch all lessons
-    if (!this.searchQuery || this.searchQuery.trim() === '') {
-        this.fetchLessons();
-        return;
-    }
-    
-    // Call backend search API (3% - Frontend fetch)
-    fetch(this.apiURL + '/search?q=' + encodeURIComponent(this.searchQuery))
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error('Search failed');
+        searchLessons: function () {
+            // If search query is empty, fetch all lessons
+            if (!this.searchQuery || this.searchQuery.trim() === '') {
+                this.fetchLessons();
+                return;
             }
-            return response.json();
-        })
-        .then(function(data) {
-            this.lessons = data;
-        }.bind(this))
-        .catch(function(error) {
-            console.error('Error searching lessons:', error);
-            alert('Search failed. Please try again.');
-        });
-},
+
+            // Call backend search API (3% - Frontend fetch)
+            fetch(this.apiURL + '/search?q=' + encodeURIComponent(this.searchQuery))
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Search failed');
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    this.lessons = data;
+                }.bind(this))
+                .catch(function (error) {
+                    console.error('Error searching lessons:', error);
+                    alert('Search failed. Please try again.');
+                });
+        },
         logout: function () {
             this.isLoggedIn = false;
             localStorage.removeItem('isLoggedIn');
@@ -387,6 +387,9 @@ var app = new Vue({
                     console.log('Order submitted:', data);
 
                     // Update lesson spaces in backend (3%)
+                    // For EACH item in cart, update the spaces
+                    let updatePromises = [];
+
                     for (let i = 0; i < this.cart.length; i++) {
                         let item = this.cart[i];
                         let lesson = this.lessons.find(function (l) {
@@ -394,9 +397,35 @@ var app = new Vue({
                         });
 
                         if (lesson) {
-                            this.updateLessonSpaces(item.id, lesson.spaces);
+                            // Calculate NEW spaces (current spaces is already reduced in frontend)
+                            let newSpaces = lesson.spaces;
+
+                            console.log(`Updating lesson ${item.id}: spaces = ${newSpaces}`);
+
+                            // Create update promise
+                            let updatePromise = fetch(this.apiURL + '/lessons/' + item.id, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ spaces: newSpaces })
+                            })
+                                .then(function (response) {
+                                    if (!response.ok) {
+                                        throw new Error('Failed to update lesson spaces');
+                                    }
+                                    return response.json();
+                                });
+
+                            updatePromises.push(updatePromise);
                         }
                     }
+
+                    // Wait for all updates to complete
+                    return Promise.all(updatePromises);
+                }.bind(this))
+                .then(function () {
+                    console.log('All lesson spaces updated successfully');
 
                     this.orderConfirmed = true;
                     this.cart = [];
@@ -404,8 +433,8 @@ var app = new Vue({
                     this.checkoutInfo.phone = '';
                 }.bind(this))
                 .catch(function (error) {
-                    console.error('Error submitting order:', error);
-                    alert('Failed to submit order. Please try again.');
+                    console.error('Error during checkout:', error);
+                    alert('Checkout failed. Please try again.');
                 });
         },
         updateLessonSpaces: function (lessonId, newSpaces) {
