@@ -67,11 +67,13 @@ var app = new Vue({
         },
         currentSlide: 0,
         slideshowInterval: null,
-        // Backend API URL - CHANGE THIS AFTER DEPLOYMENT
-        apiURL: 'http://localhost:3000/api'
+
+        apiURL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:3000/api'
+            : 'https://outsmart-backend-osm4.onrender.com/api'
     },
     computed: {
-        mascotStyle: function() {
+        mascotStyle: function () {
             return {
                 width: this.mascotAdjust.size + 'px',
                 height: this.mascotAdjust.size + 'px',
@@ -79,25 +81,25 @@ var app = new Vue({
                 zIndex: this.mascotAdjust.z
             };
         },
-        leftEyeStyle: function() {
+        leftEyeStyle: function () {
             return {
                 left: this.pupilControls.leftEyeX + '%',
                 top: this.pupilControls.leftEyeY + '%'
             };
         },
-        rightEyeStyle: function() {
+        rightEyeStyle: function () {
             return {
                 right: this.pupilControls.rightEyeX + '%',
                 top: this.pupilControls.rightEyeY + '%'
             };
         },
-        outerPupilStyle: function() {
+        outerPupilStyle: function () {
             return {
                 width: this.pupilControls.outerSize + '%',
                 height: this.pupilControls.outerSize + '%'
             };
         },
-        innerPupilStyle: function() {
+        innerPupilStyle: function () {
             return {
                 width: this.pupilControls.innerSize + '%',
                 height: this.pupilControls.innerSize + '%',
@@ -105,74 +107,74 @@ var app = new Vue({
                 left: this.pupilControls.innerOffsetX + '%'
             };
         },
-        sortedLessons: function() {
+        sortedLessons: function () {
             let lessonsArray = this.lessons.slice();
-            
+
             if (this.searchQuery) {
                 let query = this.searchQuery.toLowerCase();
-                lessonsArray = lessonsArray.filter(function(lesson) {
+                lessonsArray = lessonsArray.filter(function (lesson) {
                     return lesson.subject.toLowerCase().includes(query) ||
-                           lesson.location.toLowerCase().includes(query) ||
-                           lesson.price.toString().includes(query) ||
-                           lesson.spaces.toString().includes(query);
+                        lesson.location.toLowerCase().includes(query) ||
+                        lesson.price.toString().includes(query) ||
+                        lesson.spaces.toString().includes(query);
                 });
             }
-            
+
             let attribute = this.sortAttribute;
             let order = this.sortOrder;
-            
-            lessonsArray.sort(function(a, b) {
+
+            lessonsArray.sort(function (a, b) {
                 let valueA = a[attribute];
                 let valueB = b[attribute];
-                
+
                 if (typeof valueA === 'string') {
                     valueA = valueA.toLowerCase();
                     valueB = valueB.toLowerCase();
                 }
-                
+
                 if (order === 'ascending') {
                     return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0);
                 } else {
                     return valueA < valueB ? 1 : (valueA > valueB ? -1 : 0);
                 }
             });
-            
+
             return lessonsArray;
         },
-        cartCount: function() {
+        cartCount: function () {
             let total = 0;
             for (let i = 0; i < this.cart.length; i++) {
                 total += this.cart[i].quantity;
             }
             return total;
         },
-        cartTotal: function() {
+        cartTotal: function () {
             let total = 0;
             for (let i = 0; i < this.cart.length; i++) {
                 total += this.cart[i].price * this.cart[i].quantity;
             }
             return total;
         },
-        isValidName: function() {
+        isValidName: function () {
             return /^[A-Za-z\s]+$/.test(this.checkoutInfo.name);
         },
-        isValidPhone: function() {
+        isValidPhone: function () {
             return /^[0-9]+$/.test(this.checkoutInfo.phone);
         },
-        canCheckout: function() {
+        canCheckout: function () {
             return this.checkoutInfo.name !== '' &&
-                   this.checkoutInfo.phone !== '' &&
-                   this.isValidName &&
-                   this.isValidPhone &&
-                   this.cart.length > 0;
+                this.checkoutInfo.phone !== '' &&
+                this.isValidName &&
+                this.isValidPhone &&
+                this.cart.length > 0;
         },
-        isValidProfileName: function() {
+        isValidProfileName: function () {
             return /^[A-Za-z\s]+$/.test(this.userProfile.name);
         },
-        isValidProfilePhone: function() {
+        isValidProfilePhone: function () {
             return /^[0-9]+$/.test(this.userProfile.phone);
         },
-        canSaveProfile: function() {
+        canSaveProfile: function () {
             if (!this.userProfile.name || !this.userProfile.email) {
                 return false;
             }
@@ -184,15 +186,15 @@ var app = new Vue({
             }
             return true;
         },
-        canChangePassword: function() {
+        canChangePassword: function () {
             return this.passwordChange.current !== '' &&
-                   this.passwordChange.new !== '' &&
-                   this.passwordChange.confirm !== '' &&
-                   this.passwordChange.new === this.passwordChange.confirm;
+                this.passwordChange.new !== '' &&
+                this.passwordChange.confirm !== '' &&
+                this.passwordChange.new === this.passwordChange.confirm;
         }
     },
     methods: {
-        toggleTheme: function() {
+        toggleTheme: function () {
             this.isDarkMode = !this.isDarkMode;
             if (this.isDarkMode) {
                 document.documentElement.setAttribute('data-theme', 'dark');
@@ -202,16 +204,16 @@ var app = new Vue({
                 localStorage.setItem('theme', 'light');
             }
         },
-        toggleLoginMode: function() {
+        toggleLoginMode: function () {
             this.loginMode = this.loginMode === 'login' ? 'signup' : 'login';
             this.loginForm.email = '';
             this.loginForm.password = '';
             this.loginForm.name = '';
         },
-        trackMouse: function(event) {
+        trackMouse: function (event) {
             let modalWrapper = event.currentTarget.querySelector('.login-modal-wrapper');
             if (!modalWrapper) return;
-            
+
             let rect = modalWrapper.getBoundingClientRect();
             let mouseX = event.clientX;
             let mouseY = event.clientY;
@@ -230,35 +232,35 @@ var app = new Vue({
             let leftOffsetY = Math.sin(leftAngle) * leftDistance;
             let rightOffsetX = Math.cos(rightAngle) * rightDistance;
             let rightOffsetY = Math.sin(rightAngle) * rightDistance;
-            
+
             this.leftPupilStyle = {
                 transform: 'translate(' + leftOffsetX + 'px, ' + leftOffsetY + 'px)'
             };
-            
+
             this.rightPupilStyle = {
                 transform: 'translate(' + rightOffsetX + 'px, ' + rightOffsetY + 'px)'
             };
-            
+
             let innerLeftOffsetX = Math.cos(leftAngle) * leftDistance * 0.3;
             let innerLeftOffsetY = Math.sin(leftAngle) * leftDistance * 0.3;
             let innerRightOffsetX = Math.cos(rightAngle) * rightDistance * 0.3;
             let innerRightOffsetY = Math.sin(rightAngle) * rightDistance * 0.3;
-            
+
             this.leftInnerPupilStyle = {
                 transform: 'translate(' + innerLeftOffsetX + 'px, ' + innerLeftOffsetY + 'px)'
             };
-            
+
             this.rightInnerPupilStyle = {
                 transform: 'translate(' + innerRightOffsetX + 'px, ' + innerRightOffsetY + 'px)'
             };
         },
-        hideMascot: function() {
+        hideMascot: function () {
             this.mascotAdjust.y = -18;
         },
-        showMascot: function() {
+        showMascot: function () {
             this.mascotAdjust.y = -71;
         },
-        handleLogin: function() {
+        handleLogin: function () {
             if (this.loginMode === 'login') {
                 if (this.loginForm.email && this.loginForm.password) {
                     console.log('Logging in:', this.loginForm.email);
@@ -291,20 +293,20 @@ var app = new Vue({
                 }
             }
         },
-        logout: function() {
+        logout: function () {
             this.isLoggedIn = false;
             localStorage.removeItem('isLoggedIn');
             this.cart = [];
             this.currentPage = 'dashboard';
         },
-        addToCart: function(lesson) {
+        addToCart: function (lesson) {
             if (!this.isLoggedIn) {
                 this.showLoginModal = true;
                 return;
             }
-            
+
             if (lesson.spaces === 0) return;
-            
+
             let found = false;
             for (let i = 0; i < this.cart.length; i++) {
                 if (this.cart[i].id === lesson._id) {
@@ -313,7 +315,7 @@ var app = new Vue({
                     break;
                 }
             }
-            
+
             if (!found) {
                 this.cart.push({
                     id: lesson._id,
@@ -324,34 +326,34 @@ var app = new Vue({
                     quantity: 1
                 });
             }
-            
+
             lesson.spaces--;
         },
-        removeFromCart: function(index) {
+        removeFromCart: function (index) {
             let item = this.cart[index];
-            
+
             for (let i = 0; i < this.lessons.length; i++) {
                 if (this.lessons[i]._id === item.id) {
                     this.lessons[i].spaces += item.quantity;
                     break;
                 }
             }
-            
+
             this.cart.splice(index, 1);
         },
-        checkout: function() {
+        checkout: function () {
             let orderData = {
                 name: this.checkoutInfo.name,
                 phone: this.checkoutInfo.phone,
                 lessonIDs: [],
                 spaces: []
             };
-            
+
             for (let i = 0; i < this.cart.length; i++) {
                 orderData.lessonIDs.push(this.cart[i].id);
                 orderData.spaces.push(this.cart[i].quantity);
             }
-            
+
             // POST to backend (4%)
             fetch(this.apiURL + '/orders', {
                 method: 'POST',
@@ -360,38 +362,38 @@ var app = new Vue({
                 },
                 body: JSON.stringify(orderData)
             })
-            .then(function(response) {
-                if (!response.ok) {
-                    throw new Error('Order submission failed');
-                }
-                return response.json();
-            })
-            .then(function(data) {
-                console.log('Order submitted:', data);
-                
-                // Update lesson spaces in backend (3%)
-                for (let i = 0; i < this.cart.length; i++) {
-                    let item = this.cart[i];
-                    let lesson = this.lessons.find(function(l) { 
-                        return l._id === item.id; 
-                    });
-                    
-                    if (lesson) {
-                        this.updateLessonSpaces(item.id, lesson.spaces);
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Order submission failed');
                     }
-                }
-                
-                this.orderConfirmed = true;
-                this.cart = [];
-                this.checkoutInfo.name = '';
-                this.checkoutInfo.phone = '';
-            }.bind(this))
-            .catch(function(error) {
-                console.error('Error submitting order:', error);
-                alert('Failed to submit order. Please try again.');
-            });
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log('Order submitted:', data);
+
+                    // Update lesson spaces in backend (3%)
+                    for (let i = 0; i < this.cart.length; i++) {
+                        let item = this.cart[i];
+                        let lesson = this.lessons.find(function (l) {
+                            return l._id === item.id;
+                        });
+
+                        if (lesson) {
+                            this.updateLessonSpaces(item.id, lesson.spaces);
+                        }
+                    }
+
+                    this.orderConfirmed = true;
+                    this.cart = [];
+                    this.checkoutInfo.name = '';
+                    this.checkoutInfo.phone = '';
+                }.bind(this))
+                .catch(function (error) {
+                    console.error('Error submitting order:', error);
+                    alert('Failed to submit order. Please try again.');
+                });
         },
-        updateLessonSpaces: function(lessonId, newSpaces) {
+        updateLessonSpaces: function (lessonId, newSpaces) {
             // PUT to update spaces (3%)
             fetch(this.apiURL + '/lessons/' + lessonId, {
                 method: 'PUT',
@@ -400,46 +402,59 @@ var app = new Vue({
                 },
                 body: JSON.stringify({ spaces: newSpaces })
             })
-            .then(function(response) {
-                if (!response.ok) {
-                    throw new Error('Failed to update lesson spaces');
-                }
-                return response.json();
-            })
-            .then(function(data) {
-                console.log('Lesson spaces updated:', data);
-            })
-            .catch(function(error) {
-                console.error('Error updating lesson spaces:', error);
-            });
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Failed to update lesson spaces');
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log('Lesson spaces updated:', data);
+                })
+                .catch(function (error) {
+                    console.error('Error updating lesson spaces:', error);
+                });
         },
-        fetchLessons: function() {
+        fetchLessons: function () {
             // GET lessons from backend (3%)
             fetch(this.apiURL + '/lessons')
-                .then(function(response) {
+                .then(function (response) {
                     if (!response.ok) {
                         throw new Error('Failed to fetch lessons');
                     }
                     return response.json();
                 })
-                .then(function(data) {
+                .then(function (data) {
                     this.lessons = data;
                 }.bind(this))
-                .catch(function(error) {
+                .catch(function (error) {
                     console.error('Error fetching lessons:', error);
-                    // Fallback to empty array or show error message
-                    this.lessons = [];
+                    // Fallback to hardcoded data when backend is not available (e.g., on GitHub Pages before AWS deployment)
+                    this.lessons = [
+                        { _id: '1', subject: 'Math', location: 'London', price: 100, spaces: 5, icon: 'fas fa-calculator' },
+                        { _id: '2', subject: 'Math', location: 'Oxford', price: 100, spaces: 5, icon: 'fas fa-calculator' },
+                        { _id: '3', subject: 'English', location: 'London', price: 100, spaces: 5, icon: 'fas fa-book' },
+                        { _id: '4', subject: 'English', location: 'York', price: 90, spaces: 5, icon: 'fas fa-book' },
+                        { _id: '5', subject: 'Music', location: 'Bristol', price: 90, spaces: 5, icon: 'fas fa-music' },
+                        { _id: '6', subject: 'Science', location: 'Manchester', price: 95, spaces: 5, icon: 'fas fa-flask' },
+                        { _id: '7', subject: 'Art', location: 'Liverpool', price: 85, spaces: 5, icon: 'fas fa-palette' },
+                        { _id: '8', subject: 'History', location: 'Cambridge', price: 80, spaces: 5, icon: 'fas fa-landmark' },
+                        { _id: '9', subject: 'Geography', location: 'Edinburgh', price: 75, spaces: 5, icon: 'fas fa-globe' },
+                        { _id: '10', subject: 'PE', location: 'Birmingham', price: 70, spaces: 5, icon: 'fas fa-running' },
+                        { _id: '11', subject: 'Drama', location: 'Leeds', price: 80, spaces: 5, icon: 'fas fa-theater-masks' },
+                        { _id: '12', subject: 'IT', location: 'London', price: 110, spaces: 5, icon: 'fas fa-laptop-code' }
+                    ];
                 }.bind(this));
         },
-        enableProfileEdit: function() {
+        enableProfileEdit: function () {
             this.userProfileBackup = JSON.parse(JSON.stringify(this.userProfile));
             this.profileEditMode = true;
         },
-        cancelProfileEdit: function() {
+        cancelProfileEdit: function () {
             this.userProfile = JSON.parse(JSON.stringify(this.userProfileBackup));
             this.profileEditMode = false;
         },
-        saveProfile: function() {
+        saveProfile: function () {
             if (!this.canSaveProfile) {
                 return;
             }
@@ -449,7 +464,7 @@ var app = new Vue({
 
             alert('Profile updated successfully!');
         },
-        changePassword: function() {
+        changePassword: function () {
             if (!this.canChangePassword) {
                 return;
             }
@@ -461,11 +476,11 @@ var app = new Vue({
             this.passwordChange.new = '';
             this.passwordChange.confirm = '';
         },
-        saveSettings: function() {
+        saveSettings: function () {
             localStorage.setItem('userSettings', JSON.stringify(this.settings));
             alert('Settings saved successfully!');
         },
-        resetSettings: function() {
+        resetSettings: function () {
             this.settings = {
                 emailNotifications: true,
                 pushNotifications: false,
@@ -478,19 +493,19 @@ var app = new Vue({
             localStorage.setItem('userSettings', JSON.stringify(this.settings));
             alert('Settings reset to default!');
         },
-        startSlideshow: function() {
+        startSlideshow: function () {
             var self = this;
-            this.slideshowInterval = setInterval(function() {
+            this.slideshowInterval = setInterval(function () {
                 self.currentSlide = (self.currentSlide + 1) % 4;
             }, 4000);
         },
-        stopSlideshow: function() {
+        stopSlideshow: function () {
             if (this.slideshowInterval) {
                 clearInterval(this.slideshowInterval);
             }
         }
     },
-    created: function() {
+    created: function () {
         // Fetch lessons from backend on app load
         this.fetchLessons();
 
@@ -517,7 +532,7 @@ var app = new Vue({
 
         this.startSlideshow();
     },
-    beforeDestroy: function() {
+    beforeDestroy: function () {
         this.stopSlideshow();
     }
 });
