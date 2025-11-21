@@ -206,7 +206,8 @@ var app = new Vue({
             if (!this.selectedLesson) return [];
 
             // Return the lesson's main image from backend
-            var mainImage = this.getImageUrl(this.selectedLesson.image);
+            var imageName = this.selectedLesson.image || 'default.jpg';
+            var mainImage = this.imageBaseURL + '/' + imageName;
             return [mainImage];
         },
         lessonDescription: function () {
