@@ -222,21 +222,30 @@
                     <div class="col-lg-4 col-md-6" v-for="lesson in lessons.slice(0, 6)" v-bind:key="lesson.id">
                         <div class="card lesson-card border-0 shadow-sm h-100">
                             <div class="card-body">
-                                <div class="lesson-icon bg-gradient-primary text-white rounded-3 p-3 mb-3">
-                                    <i v-bind:class="lesson.icon + ' fa-2x'"></i>
+                                <div class="lesson-image-container">
+                                    <img v-bind:src="getImageUrl(lesson.image)"
+                                         v-bind:alt="lesson.subject"
+                                         class="lesson-image">
                                 </div>
                                 <h5 class="card-title">{{ lesson.subject }}</h5>
+                                <div class="star-rating">
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 1}"></i>
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 2}"></i>
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 3}"></i>
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 4}"></i>
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 5}"></i>
+                                    <span class="rating-text">({{ lesson.rating || 0 }})</span>
+                                </div>
                                 <p class="card-text text-muted mb-2">
                                     <i class="fas fa-map-marker-alt me-1"></i> {{ lesson.location }}
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="fw-bold text-primary">£{{ lesson.price }}/session</span>
+                                    <span class="fw-bold text-primary">Rs {{ lesson.price }}/session</span>
                                     <span class="badge">{{ lesson.spaces }} spaces</span>
                                 </div>
-                                <button class="btn btn-primary w-100" v-on:click="addToCart(lesson)"
-                                    v-bind:disabled="lesson.spaces === 0">
-                                    <i class="fas fa-cart-plus me-2"></i>
-                                    {{ lesson.spaces === 0 ? 'Sold Out' : 'Add to Cart' }}
+                                <button class="btn btn-primary w-100" v-on:click="viewLesson(lesson)">
+                                    <i class="fas fa-eye me-2"></i>
+                                    View Lesson
                                 </button>
                             </div>
                         </div>
@@ -280,21 +289,30 @@
                     <div class="col-lg-4 col-md-6" v-for="lesson in sortedLessons" v-bind:key="lesson.id">
                         <div class="card lesson-card border-0 shadow-sm h-100">
                             <div class="card-body">
-                                <div class="lesson-icon bg-gradient-primary text-white rounded-3 p-3 mb-3">
-                                    <i v-bind:class="lesson.icon + ' fa-2x'"></i>
+                                <div class="lesson-image-container">
+                                    <img v-bind:src="getImageUrl(lesson.image)"
+                                         v-bind:alt="lesson.subject"
+                                         class="lesson-image">
                                 </div>
                                 <h5 class="card-title">{{ lesson.subject }}</h5>
+                                <div class="star-rating">
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 1}"></i>
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 2}"></i>
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 3}"></i>
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 4}"></i>
+                                    <i class="fas fa-star star" v-bind:class="{'filled': lesson.rating >= 5}"></i>
+                                    <span class="rating-text">({{ lesson.rating || 0 }})</span>
+                                </div>
                                 <p class="card-text text-muted mb-2">
                                     <i class="fas fa-map-marker-alt me-1"></i> {{ lesson.location }}
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="fw-bold text-primary">£{{ lesson.price }}/session</span>
+                                    <span class="fw-bold text-primary">Rs {{ lesson.price }}/session</span>
                                     <span class="badge">{{ lesson.spaces }} spaces</span>
                                 </div>
-                                <button class="btn btn-primary w-100" v-on:click="addToCart(lesson)"
-                                    v-bind:disabled="lesson.spaces === 0">
-                                    <i class="fas fa-cart-plus me-2"></i>
-                                    {{ lesson.spaces === 0 ? 'Sold Out' : 'Add to Cart' }}
+                                <button class="btn btn-primary w-100" v-on:click="viewLesson(lesson)">
+                                    <i class="fas fa-eye me-2"></i>
+                                    View Lesson
                                 </button>
                             </div>
                         </div>
@@ -304,6 +322,110 @@
                 <div v-if="sortedLessons.length === 0" class="text-center py-5">
                     <i class="fas fa-search fa-4x text-muted mb-3"></i>
                     <p class="text-muted fs-5">No lessons found matching your search.</p>
+                </div>
+            </div>
+
+            <!-- Lesson Detail Page -->
+            <div v-if="currentPage === 'lessonDetail'" class="page">
+                <!-- Back Button -->
+                <button class="btn btn-outline-secondary mb-4" v-on:click="currentPage = previousPage">
+                    <i class="fas fa-arrow-left me-2"></i> Back
+                </button>
+
+                <div class="row" v-if="selectedLesson">
+                    <!-- Left Column - Images -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="lesson-gallery">
+                            <!-- Main Image -->
+                            <div class="main-image-container mb-3">
+                                <img v-bind:src="lessonImages[currentImageIndex]"
+                                     v-bind:alt="selectedLesson.subject"
+                                     class="main-lesson-image rounded-3 shadow-sm">
+                            </div>
+
+                            <!-- Thumbnail Navigation -->
+                            <div class="thumbnail-container d-flex gap-2">
+                                <div v-for="(image, index) in lessonImages"
+                                     v-bind:key="index"
+                                     class="thumbnail-item"
+                                     v-bind:class="{'active': currentImageIndex === index}"
+                                     v-on:click="currentImageIndex = index">
+                                    <img v-bind:src="image"
+                                         v-bind:alt="'Image ' + (index + 1)"
+                                         class="thumbnail-image rounded">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Details -->
+                    <div class="col-lg-6">
+                        <div class="lesson-details">
+                            <!-- Title and Rating -->
+                            <h1 class="lesson-title mb-2">{{ selectedLesson.subject }}</h1>
+                            <div class="lesson-rating mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <span class="ms-2 text-muted">(4.5 rating)</span>
+                            </div>
+
+                            <!-- Location -->
+                            <p class="lesson-location mb-3">
+                                <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                {{ selectedLesson.location }}
+                            </p>
+
+                            <!-- Price and Availability -->
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="price-tag">
+                                    <span class="fs-3 fw-bold text-primary">Rs {{ selectedLesson.price }}</span>
+                                    <span class="text-muted">/session</span>
+                                </div>
+                                <span class="badge bg-success-subtle text-success px-3 py-2">
+                                    <i class="fas fa-users me-1"></i>
+                                    {{ selectedLesson.spaces }} spots available
+                                </span>
+                            </div>
+
+                            <!-- About This Activity -->
+                            <div class="card border-0 bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        <i class="fas fa-info-circle text-primary me-2"></i>
+                                        About This Lesson
+                                    </h5>
+                                    <p class="card-text text-muted">{{ selectedLesson.description || lessonDescription }}</p>
+                                </div>
+                            </div>
+
+                            <!-- What is Included -->
+                            <div class="card border-0 bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        What is Included
+                                    </h5>
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2" v-for="(item, index) in (selectedLesson.includes || defaultIncludes)" v-bind:key="index">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            {{ item }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Enroll Button -->
+                            <button class="btn btn-primary btn-lg w-100"
+                                    v-on:click="addToCart(selectedLesson)"
+                                    v-bind:disabled="selectedLesson.spaces === 0">
+                                <i class="fas fa-shopping-cart me-2"></i>
+                                {{ selectedLesson.spaces === 0 ? 'Sold Out' : 'Enroll Now' }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -498,9 +620,9 @@
                                                 <i class="fas fa-map-marker-alt me-1"></i> {{ item.location }}
                                             </p>
                                             <p class="mb-0">
-                                                <span class="fw-bold text-primary">£{{ item.price }}</span>
+                                                <span class="fw-bold text-primary">Rs {{ item.price }}</span>
                                                 <span class="text-muted"> × {{ item.quantity }} = </span>
-                                                <span class="fw-bold">£{{ item.price * item.quantity }}</span>
+                                                <span class="fw-bold">Rs {{ item.price * item.quantity }}</span>
                                             </p>
                                         </div>
                                         <div class="col-auto">
@@ -541,11 +663,11 @@
                                     <div class="border-top pt-3 mb-3">
                                         <div class="d-flex justify-content-between mb-2">
                                             <span class="text-muted">Subtotal:</span>
-                                            <span class="fw-bold">£{{ cartTotal }}</span>
+                                            <span class="fw-bold">Rs {{ cartTotal }}</span>
                                         </div>
                                         <div class="d-flex justify-content-between mb-3">
                                             <span class="fs-5 fw-bold">Total:</span>
-                                            <span class="fs-5 fw-bold text-primary">£{{ cartTotal }}</span>
+                                            <span class="fs-5 fw-bold text-primary">Rs {{ cartTotal }}</span>
                                         </div>
                                     </div>
 

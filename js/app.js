@@ -68,9 +68,27 @@ var app = new Vue({
         currentSlide: 0,
         slideshowInterval: null,
 
+        // Lesson detail page data
+        selectedLesson: null,
+        previousPage: 'dashboard',
+        currentImageIndex: 0,
+
         apiURL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
             ? 'http://localhost:3000/api'
-            : 'https://outsmart-backend-osm4.onrender.com/api'
+            : 'https://outsmart-backend-osm4.onrender.com/api',
+
+        // Base URL for images (static files from backend)
+        imageBaseURL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:3000/images'
+            : 'https://outsmart-backend-osm4.onrender.com/images',
+
+        // Default includes for lessons without includes array
+        defaultIncludes: [
+            'Professional instruction',
+            'All necessary equipment',
+            'Progress tracking',
+            'Certificate upon completion'
+        ]
     },
     computed: {
         mascotStyle: function () {
@@ -183,9 +201,42 @@ var app = new Vue({
                 this.passwordChange.new !== '' &&
                 this.passwordChange.confirm !== '' &&
                 this.passwordChange.new === this.passwordChange.confirm;
+        },
+        lessonImages: function () {
+            if (!this.selectedLesson) return [];
+
+            // Return the lesson's main image from backend
+            var mainImage = this.getImageUrl(this.selectedLesson.image);
+            return [mainImage];
+        },
+        lessonDescription: function () {
+            if (!this.selectedLesson) return '';
+
+            let descriptions = {
+                'Math': 'Master the fundamentals of mathematics! From algebra to calculus, develop strong problem-solving skills and logical thinking in an engaging, supportive environment.',
+                'English': 'Enhance your language skills through literature, creative writing, and critical analysis. Build confidence in communication and expression.',
+                'Music': 'Discover the joy of music! Learn to read notation, play instruments, and understand music theory while developing your creative expression.',
+                'Science': 'Explore the wonders of the natural world through hands-on experiments and discovery. Build a foundation in scientific inquiry and critical thinking.',
+                'Art': 'Unleash your creativity! Learn various artistic techniques, from drawing to painting, and develop your unique artistic voice.',
+                'History': 'Journey through time and explore the events that shaped our world. Develop critical thinking through analyzing historical sources and perspectives.',
+                'Geography': 'Discover our world! Learn about landscapes, cultures, and environmental systems while developing spatial awareness and global understanding.',
+                'PE': 'Get active and healthy! Develop physical fitness, teamwork skills, and sportsmanship through various sports and physical activities.',
+                'Drama': 'Step into the spotlight! Build confidence, creativity, and communication skills through theatrical performance and improvisation.',
+                'IT': 'Navigate the digital world! Learn programming, digital literacy, and technology skills essential for the modern age.',
+                'French': 'Bonjour! Start your journey into the French language and culture. Learn practical conversation skills, vocabulary, and grammar in a lively, interactive setting.'
+            };
+
+            return descriptions[this.selectedLesson.subject] || 'Join us for an engaging and educational experience! Our expert instructors will guide you through comprehensive lessons designed to help you achieve your learning goals.';
         }
     },
     methods: {
+        getImageUrl: function (imageName) {
+            // Returns the full URL for a lesson image from the backend
+            if (!imageName) {
+                return this.imageBaseURL + '/default.jpg';
+            }
+            return this.imageBaseURL + '/' + imageName;
+        },
         toggleTheme: function () {
             this.isDarkMode = !this.isDarkMode;
             if (this.isDarkMode) {
@@ -313,6 +364,12 @@ var app = new Vue({
             localStorage.removeItem('isLoggedIn');
             this.cart = [];
             this.currentPage = 'dashboard';
+        },
+        viewLesson: function (lesson) {
+            this.selectedLesson = lesson;
+            this.previousPage = this.currentPage;
+            this.currentImageIndex = 0;
+            this.currentPage = 'lessonDetail';
         },
         addToCart: function (lesson) {
             if (!this.isLoggedIn) {
@@ -475,18 +532,18 @@ var app = new Vue({
                     console.error('Error fetching lessons:', error);
                     // Fallback to hardcoded data when backend is not available (e.g., on GitHub Pages before AWS deployment)
                     this.lessons = [
-                        { _id: '1', subject: 'Math', location: 'London', price: 100, spaces: 5, icon: 'fas fa-calculator' },
-                        { _id: '2', subject: 'Math', location: 'Oxford', price: 100, spaces: 5, icon: 'fas fa-calculator' },
-                        { _id: '3', subject: 'English', location: 'London', price: 100, spaces: 5, icon: 'fas fa-book' },
-                        { _id: '4', subject: 'English', location: 'York', price: 90, spaces: 5, icon: 'fas fa-book' },
-                        { _id: '5', subject: 'Music', location: 'Bristol', price: 90, spaces: 5, icon: 'fas fa-music' },
-                        { _id: '6', subject: 'Science', location: 'Manchester', price: 95, spaces: 5, icon: 'fas fa-flask' },
-                        { _id: '7', subject: 'Art', location: 'Liverpool', price: 85, spaces: 5, icon: 'fas fa-palette' },
-                        { _id: '8', subject: 'History', location: 'Cambridge', price: 80, spaces: 5, icon: 'fas fa-landmark' },
-                        { _id: '9', subject: 'Geography', location: 'Edinburgh', price: 75, spaces: 5, icon: 'fas fa-globe' },
-                        { _id: '10', subject: 'PE', location: 'Birmingham', price: 70, spaces: 5, icon: 'fas fa-running' },
-                        { _id: '11', subject: 'Drama', location: 'Leeds', price: 80, spaces: 5, icon: 'fas fa-theater-masks' },
-                        { _id: '12', subject: 'IT', location: 'London', price: 110, spaces: 5, icon: 'fas fa-laptop-code' }
+                        { _id: '1', subject: 'Mathematics', location: 'Port Louis', price: 1500, spaces: 5, icon: 'fas fa-calculator', image: 'math.jpg', rating: 4 },
+                        { _id: '2', subject: 'English Literature', location: 'Curepipe', price: 1200, spaces: 5, icon: 'fas fa-book', image: 'english.jpg', rating: 5 },
+                        { _id: '3', subject: 'Music Theory', location: 'Quatre Bornes', price: 1800, spaces: 5, icon: 'fas fa-music', image: 'music.jpg', rating: 4 },
+                        { _id: '4', subject: 'Science', location: 'Rose Hill', price: 1600, spaces: 5, icon: 'fas fa-flask', image: 'science.jpg', rating: 5 },
+                        { _id: '5', subject: 'Art & Design', location: 'Vacoas', price: 1400, spaces: 5, icon: 'fas fa-palette', image: 'art.jpg', rating: 4 },
+                        { _id: '6', subject: 'History', location: 'Beau Bassin', price: 1100, spaces: 5, icon: 'fas fa-landmark', image: 'history.jpg', rating: 3 },
+                        { _id: '7', subject: 'Geography', location: 'Mahebourg', price: 1000, spaces: 5, icon: 'fas fa-globe', image: 'geography.jpg', rating: 4 },
+                        { _id: '8', subject: 'Physical Education', location: 'Flic en Flac', price: 900, spaces: 5, icon: 'fas fa-running', image: 'pe.jpg', rating: 5 },
+                        { _id: '9', subject: 'Drama & Theatre', location: 'Grand Baie', price: 1300, spaces: 5, icon: 'fas fa-theater-masks', image: 'drama.jpg', rating: 4 },
+                        { _id: '10', subject: 'Computer Science', location: 'Ebene', price: 2000, spaces: 5, icon: 'fas fa-laptop-code', image: 'it.jpg', rating: 5 },
+                        { _id: '11', subject: 'French Language', location: 'Port Louis', price: 1400, spaces: 5, icon: 'fas fa-language', image: 'french.jpg', rating: 4 },
+                        { _id: '12', subject: 'Swimming', location: 'Pereybere', price: 1700, spaces: 5, icon: 'fas fa-swimmer', image: 'swimming.jpg', rating: 5 }
                     ];
                 }.bind(this));
         },

@@ -389,6 +389,74 @@ body {
     color: var(--primary);
 }
 
+/* Lesson Card Image */
+.lesson-image-container {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background-color: var(--main-bg);
+    border: 1px solid var(--border-color);
+}
+
+.lesson-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.lesson-card:hover .lesson-image {
+    transform: scale(1.05);
+}
+
+/* Star Rating Component */
+.star-rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 8px;
+}
+
+.star-rating .star {
+    font-size: 14px;
+    color: var(--border-color);
+}
+
+.star-rating .star.filled {
+    color: var(--text-primary);
+}
+
+.star-rating .star.half {
+    position: relative;
+}
+
+.star-rating .star.half::before {
+    content: '\f005';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+    color: var(--text-primary);
+}
+
+.star-rating .rating-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-left: 6px;
+}
+
+[data-theme="dark"] .star-rating .star.filled {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .star-rating .star.half::before {
+    color: var(--text-primary);
+}
+
 /* Stat Cards */
 .stat-card {
     border: 1px solid var(--border-color);
@@ -1189,6 +1257,648 @@ textarea.form-control::placeholder {
     margin-bottom: 0;
 }
 
+/* Lesson Details Page Styles */
+.lesson-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.lesson-gallery {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--card-bg);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.main-image-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--primary);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.gallery-nav-btn:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-nav-btn.prev {
+    left: 20px;
+}
+
+.gallery-nav-btn.next {
+    right: 20px;
+}
+
+[data-theme="dark"] .gallery-nav-btn {
+    background: rgba(17, 24, 39, 0.9);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .gallery-nav-btn:hover {
+    background: var(--card-bg);
+}
+
+.thumbnail-container {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background: var(--card-bg);
+    overflow-x: auto;
+}
+
+.thumbnail-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.thumbnail-container::-webkit-scrollbar-track {
+    background: var(--main-bg);
+    border-radius: 3px;
+}
+
+.thumbnail-container::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.thumbnail-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+.thumbnail {
+    min-width: 100px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.thumbnail:hover {
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.thumbnail.active {
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(31, 41, 55, 0.3);
+}
+
+.lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.lesson-icon-large {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: transparent;
+    border: 3px solid var(--primary);
+}
+
+.lesson-icon-large i {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.lesson-title-group h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.lesson-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.lesson-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.lesson-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stars {
+    display: flex;
+    gap: 2px;
+}
+
+.star {
+    color: #fbbf24;
+    font-size: 18px;
+}
+
+.star.empty {
+    color: var(--border-color);
+}
+
+.rating-number {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.rating-count {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.lesson-section {
+    margin-bottom: 32px;
+}
+
+.lesson-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.lesson-section h2 i {
+    color: var(--primary);
+}
+
+.lesson-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.details-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.details-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--text-secondary);
+}
+
+.details-list li i {
+    color: var(--primary);
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.booking-card {
+    position: sticky;
+    top: 100px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.price-section {
+    margin-bottom: 20px;
+}
+
+.price-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.price-amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.price-unit {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.availability-section {
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--main-bg);
+    border-radius: 8px;
+}
+
+.availability-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.spots-available {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.spots-available i {
+    font-size: 1.2rem;
+}
+
+.spots-limited {
+    color: var(--warning);
+}
+
+.spots-sold-out {
+    color: var(--danger);
+}
+
+.enroll-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.enroll-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(31, 41, 55, 0.3);
+}
+
+.enroll-btn:disabled {
+    background: var(--border-color);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+}
+
+[data-theme="dark"] .enroll-btn {
+    background: var(--primary);
+    color: #111827;
+}
+
+[data-theme="dark"] .enroll-btn:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(243, 244, 246, 0.3);
+}
+
+.booking-features {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.booking-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.booking-feature i {
+    color: var(--success);
+    font-size: 1.1rem;
+}
+
+.back-to-lessons {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 24px;
+    transition: all 0.2s;
+}
+
+.back-to-lessons:hover {
+    gap: 12px;
+    color: var(--primary-dark);
+}
+
+/* Lesson Detail Page - Viewport Fit */
+.page:has(.lesson-gallery) {
+    max-height: calc(100vh - 64px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-top: 48px;
+}
+
+.page:has(.lesson-gallery) .row {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+    display: flex;
+    align-items: stretch;
+}
+
+.page:has(.lesson-gallery) .col-lg-6 {
+    display: flex;
+    flex-direction: column;
+}
+
+.page:has(.lesson-gallery) .lesson-gallery {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.page:has(.lesson-gallery) .main-image-container {
+    flex: 1;
+    height: auto;
+    min-height: 300px;
+}
+
+.page:has(.lesson-gallery) .main-image-container img,
+.page:has(.lesson-gallery) .main-lesson-image {
+    height: 100%;
+    object-fit: cover;
+}
+
+.page:has(.lesson-gallery) .lesson-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.page:has(.lesson-gallery) .lesson-details .btn-primary {
+    margin-top: 0.5rem;
+}
+
+.page:has(.lesson-gallery) [class*="col-"] {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.lesson-gallery {
+    max-width: 100%;
+}
+
+.main-image-container img,
+.main-lesson-image {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Lesson Detail - Typography & Spacing */
+.page:has(.lesson-gallery) .lesson-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem !important;
+}
+
+.page:has(.lesson-gallery) .lesson-rating {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem !important;
+}
+
+.page:has(.lesson-gallery) .lesson-location {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem !important;
+}
+
+.page:has(.lesson-gallery) .price-tag .fs-3 {
+    font-size: 1.5rem !important;
+}
+
+.page:has(.lesson-gallery) .d-flex.justify-content-between {
+    margin-bottom: 1rem !important;
+}
+
+.page:has(.lesson-gallery) .card.mb-4 {
+    margin-bottom: 0.75rem !important;
+}
+
+.page:has(.lesson-gallery) .card-body {
+    padding: 0.75rem 1rem;
+}
+
+.page:has(.lesson-gallery) .card-title {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.page:has(.lesson-gallery) .card-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.page:has(.lesson-gallery) .list-unstyled li {
+    margin-bottom: 0.35rem !important;
+    font-size: 0.9rem;
+}
+
+.page:has(.lesson-gallery) .btn-lg {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+}
+
+/* Spots available badge */
+.page:has(.lesson-gallery) .badge.bg-success-subtle {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem !important;
+    font-weight: 600;
+}
+
+/* View Lesson Button */
+.btn-view-lesson {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.btn-view-lesson:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(31, 41, 55, 0.15);
+}
+
+[data-theme="dark"] .btn-view-lesson {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .btn-view-lesson:hover {
+    background: var(--primary);
+    color: #111827;
+}
+
+/* Lesson Detail Page - Main Image */
+.main-lesson-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+/* Thumbnail Navigation */
+.thumbnail-item {
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.thumbnail-item:hover {
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.thumbnail-item.active {
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(31, 41, 55, 0.3);
+}
+
+.thumbnail-image {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Lesson Title */
+.lesson-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Dark mode background for info cards */
+[data-theme="dark"] .bg-light {
+    background-color: rgba(31, 41, 55, 0.5) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .main-image-container {
+        height: 400px;
+    }
+
+    .lesson-title-group h1 {
+        font-size: 2rem;
+    }
+
+    .booking-card {
+        position: relative;
+        top: 0;
+        margin-top: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-image-container {
+        height: 300px;
+    }
+
+    .lesson-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .lesson-icon-large {
+        width: 60px;
+        height: 60px;
+    }
+
+    .lesson-icon-large i {
+        font-size: 2rem;
+    }
+
+    .lesson-title-group h1 {
+        font-size: 1.75rem;
+    }
+
+    .gallery-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .gallery-nav-btn.prev {
+        left: 10px;
+    }
+
+    .gallery-nav-btn.next {
+        right: 10px;
+    }
+
+    .details-list {
+        grid-template-columns: 1fr;
+    }
+
+    .price-amount {
+        font-size: 2rem;
+    }
+}
+
 /* Responsive Hero */
 @media (max-width: 991px) {
     .hero-title {
@@ -1261,3 +1971,4 @@ textarea.form-control::placeholder {
         font-size: 0.95rem;
     }
 }
+
