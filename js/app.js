@@ -4,35 +4,6 @@ var app = new Vue({
         currentPage: 'dashboard',
         orderConfirmed: false,
         isDarkMode: false,
-        showLoginModal: false,
-        isLoggedIn: false,
-        loginMode: 'login',
-        loginForm: {
-            email: '',
-            password: '',
-            name: ''
-        },
-        leftPupilStyle: {},
-        rightPupilStyle: {},
-        leftInnerPupilStyle: {},
-        rightInnerPupilStyle: {},
-        mascotAdjust: {
-            x: -162,
-            y: -70.5,
-            z: 2,
-            size: 193
-        },
-        pupilControls: {
-            leftEyeX: 28,
-            leftEyeY: 28,
-            rightEyeX: 33,
-            rightEyeY: 28,
-            outerSize: 31,
-            innerSize: 30,
-            innerOffsetX: 0,
-            innerOffsetY: 0,
-            moveRange: 13
-        },
         lessons: [],
         cart: [],
         sortAttribute: 'subject',
@@ -91,40 +62,6 @@ var app = new Vue({
         ]
     },
     computed: {
-        mascotStyle: function () {
-            return {
-                width: this.mascotAdjust.size + 'px',
-                height: this.mascotAdjust.size + 'px',
-                transform: 'translateX(calc(-50% + ' + this.mascotAdjust.x + 'px)) translateY(' + this.mascotAdjust.y + 'px)',
-                zIndex: this.mascotAdjust.z
-            };
-        },
-        leftEyeStyle: function () {
-            return {
-                left: this.pupilControls.leftEyeX + '%',
-                top: this.pupilControls.leftEyeY + '%'
-            };
-        },
-        rightEyeStyle: function () {
-            return {
-                right: this.pupilControls.rightEyeX + '%',
-                top: this.pupilControls.rightEyeY + '%'
-            };
-        },
-        outerPupilStyle: function () {
-            return {
-                width: this.pupilControls.outerSize + '%',
-                height: this.pupilControls.outerSize + '%'
-            };
-        },
-        innerPupilStyle: function () {
-            return {
-                width: this.pupilControls.innerSize + '%',
-                height: this.pupilControls.innerSize + '%',
-                top: this.pupilControls.innerOffsetY + '%',
-                left: this.pupilControls.innerOffsetX + '%'
-            };
-        },
         sortedLessons: function () {
             let lessonsArray = this.lessons.slice();
 
@@ -248,95 +185,6 @@ var app = new Vue({
                 localStorage.setItem('theme', 'light');
             }
         },
-        toggleLoginMode: function () {
-            this.loginMode = this.loginMode === 'login' ? 'signup' : 'login';
-            this.loginForm.email = '';
-            this.loginForm.password = '';
-            this.loginForm.name = '';
-        },
-        trackMouse: function (event) {
-            let modalWrapper = event.currentTarget.querySelector('.login-modal-wrapper');
-            if (!modalWrapper) return;
-
-            let rect = modalWrapper.getBoundingClientRect();
-            let mouseX = event.clientX;
-            let mouseY = event.clientY;
-            let mascotCenterX = rect.left + rect.width / 2 + this.mascotAdjust.x;
-            let mascotCenterY = rect.top + this.mascotAdjust.y + this.mascotAdjust.size / 2;
-            let leftEyeX = mascotCenterX + (this.mascotAdjust.size * (this.pupilControls.leftEyeX - 50) / 100);
-            let leftEyeY = mascotCenterY + (this.mascotAdjust.size * (this.pupilControls.leftEyeY - 50) / 100);
-            let rightEyeX = mascotCenterX + (this.mascotAdjust.size * (50 - this.pupilControls.rightEyeX) / 100);
-            let rightEyeY = mascotCenterY + (this.mascotAdjust.size * (this.pupilControls.rightEyeY - 50) / 100);
-            let leftAngle = Math.atan2(mouseY - leftEyeY, mouseX - leftEyeX);
-            let maxDistance = this.mascotAdjust.size * 0.03;
-            let leftDistance = Math.min(maxDistance, Math.hypot(mouseX - leftEyeX, mouseY - leftEyeY) * 0.1);
-            let rightAngle = Math.atan2(mouseY - rightEyeY, mouseX - rightEyeX);
-            let rightDistance = Math.min(maxDistance, Math.hypot(mouseX - rightEyeX, mouseY - rightEyeY) * 0.1);
-            let leftOffsetX = Math.cos(leftAngle) * leftDistance;
-            let leftOffsetY = Math.sin(leftAngle) * leftDistance;
-            let rightOffsetX = Math.cos(rightAngle) * rightDistance;
-            let rightOffsetY = Math.sin(rightAngle) * rightDistance;
-
-            this.leftPupilStyle = {
-                transform: 'translate(' + leftOffsetX + 'px, ' + leftOffsetY + 'px)'
-            };
-
-            this.rightPupilStyle = {
-                transform: 'translate(' + rightOffsetX + 'px, ' + rightOffsetY + 'px)'
-            };
-
-            let innerLeftOffsetX = Math.cos(leftAngle) * leftDistance * 0.3;
-            let innerLeftOffsetY = Math.sin(leftAngle) * leftDistance * 0.3;
-            let innerRightOffsetX = Math.cos(rightAngle) * rightDistance * 0.3;
-            let innerRightOffsetY = Math.sin(rightAngle) * rightDistance * 0.3;
-
-            this.leftInnerPupilStyle = {
-                transform: 'translate(' + innerLeftOffsetX + 'px, ' + innerLeftOffsetY + 'px)'
-            };
-
-            this.rightInnerPupilStyle = {
-                transform: 'translate(' + innerRightOffsetX + 'px, ' + innerRightOffsetY + 'px)'
-            };
-        },
-        hideMascot: function () {
-            this.mascotAdjust.y = -18;
-        },
-        showMascot: function () {
-            this.mascotAdjust.y = -71;
-        },
-        handleLogin: function () {
-            if (this.loginMode === 'login') {
-                if (this.loginForm.email && this.loginForm.password) {
-                    console.log('Logging in:', this.loginForm.email);
-                    this.isLoggedIn = true;
-                    this.showLoginModal = false;
-                    localStorage.setItem('isLoggedIn', 'true');
-
-                    if (!this.userProfile.email) {
-                        this.userProfile.email = this.loginForm.email;
-                        localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
-                    }
-
-                    this.loginForm.email = '';
-                    this.loginForm.password = '';
-                }
-            } else {
-                if (this.loginForm.name && this.loginForm.email && this.loginForm.password) {
-                    console.log('Signing up:', this.loginForm.email);
-                    this.isLoggedIn = true;
-                    this.showLoginModal = false;
-                    localStorage.setItem('isLoggedIn', 'true');
-
-                    this.userProfile.name = this.loginForm.name;
-                    this.userProfile.email = this.loginForm.email;
-                    localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
-
-                    this.loginForm.name = '';
-                    this.loginForm.email = '';
-                    this.loginForm.password = '';
-                }
-            }
-        },
         searchLessons: function () {
             // If search query is empty, fetch all lessons
             if (!this.searchQuery || this.searchQuery.trim() === '') {
@@ -360,12 +208,6 @@ var app = new Vue({
                     alert('Search failed. Please try again.');
                 });
         },
-        logout: function () {
-            this.isLoggedIn = false;
-            localStorage.removeItem('isLoggedIn');
-            this.cart = [];
-            this.currentPage = 'dashboard';
-        },
         viewLesson: function (lesson) {
             this.selectedLesson = lesson;
             this.previousPage = this.currentPage;
@@ -373,11 +215,6 @@ var app = new Vue({
             this.currentPage = 'lessonDetail';
         },
         addToCart: function (lesson) {
-            if (!this.isLoggedIn) {
-                this.showLoginModal = true;
-                return;
-            }
-
             if (lesson.spaces === 0) return;
 
             let found = false;
@@ -615,16 +452,6 @@ var app = new Vue({
         if (savedTheme === 'dark') {
             this.isDarkMode = true;
             document.documentElement.setAttribute('data-theme', 'dark');
-        }
-
-        let savedLogin = localStorage.getItem('isLoggedIn');
-        if (savedLogin === 'true') {
-            this.isLoggedIn = true;
-        }
-
-        let savedProfile = localStorage.getItem('userProfile');
-        if (savedProfile) {
-            this.userProfile = JSON.parse(savedProfile);
         }
 
         let savedSettings = localStorage.getItem('userSettings');

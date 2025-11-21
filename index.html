@@ -49,9 +49,6 @@
                     v-on:click="currentPage = 'settings'">
                     <i class="fas fa-cog"></i> Settings
                 </button>
-                <button class="sidebar-item" v-on:click="logout">
-                    <i class="fas fa-sign-out-alt"></i> Log out
-                </button>
             </div>
         </div>
 
@@ -902,76 +899,10 @@
             </div>
         </div>
 
-        <!-- Login/Signup Modal -->
-        <div v-if="showLoginModal" class="modal-backdrop-custom" v-on:click="showLoginModal = false"
-            v-on:mousemove="trackMouse">
-            <div class="login-modal-wrapper">
-                <!-- Mascot behind modal -->
-                <div class="mascot-container" v-bind:style="mascotStyle" v-on:mouseenter="hideMascot"
-                    v-on:mouseleave="showMascot">
-                    <img src="assets/images/mascot.png" alt="OutSmart Mascot" class="mascot-image">
-                    <div class="mascot-eyes">
-                        <div class="mascot-eye left-eye" v-bind:style="leftEyeStyle">
-                            <div class="pupil-outer" v-bind:style="[outerPupilStyle, leftPupilStyle]">
-                                <div class="pupil-inner" v-bind:style="[innerPupilStyle, leftInnerPupilStyle]"></div>
-                            </div>
-                        </div>
-                        <div class="mascot-eye right-eye" v-bind:style="rightEyeStyle">
-                            <div class="pupil-outer" v-bind:style="[outerPupilStyle, rightPupilStyle]">
-                                <div class="pupil-inner" v-bind:style="[innerPupilStyle, rightInnerPupilStyle]"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Login form modal -->
-                <div class="login-modal" v-on:click.stop>
-                    <div class="text-center mb-4">
-                        <h4 class="fw-bold mb-1">OUTSMART</h4>
-                        <p class="text-muted mb-0">{{ loginMode === 'login' ? 'Login' : 'Create account' }}</p>
-                    </div>
-
-                    <form v-on:submit.prevent="handleLogin">
-                        <div class="mb-3" v-if="loginMode === 'signup'">
-                            <label class="form-label small text-muted">Name *</label>
-                            <input type="text" class="form-control form-control-lg" v-model="loginForm.name" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small text-muted">Email *</label>
-                            <input type="email" class="form-control form-control-lg" v-model="loginForm.email" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small text-muted">Password *</label>
-                            <input type="password" class="form-control form-control-lg" v-model="loginForm.password"
-                                required>
-                        </div>
-
-                        <div class="mb-4" v-if="loginMode === 'login'">
-                            <a href="#" class="small text-muted text-decoration-none">Forgotten password?</a>
-                        </div>
-
-                        <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-dark btn-lg">
-                                {{ loginMode === 'login' ? 'Login' : 'Sign Up' }}
-                                <i class="fas fa-arrow-right ms-2"></i>
-                            </button>
-                        </div>
-
-                        <div class="text-center">
-                            <button type="button" class="btn btn-link text-muted small p-0" v-on:click="toggleLoginMode">
-    {{ loginMode === 'login' ? "Don't have an account? Sign Up" : "Already have an account? Login" }}
-</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
-    <script src="./js/app.js?v=2"></script>
+    <script src="./js/app.js"></script>
 </body>
 
 </html>
