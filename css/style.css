@@ -527,8 +527,6 @@ body {
     margin-bottom: 24px;
     line-height: 1.2;
 }
-
-/* Page headers that need to be below search bar */
 .page > h2:first-child {
     margin-top: 60px;
 }
