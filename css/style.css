@@ -78,6 +78,7 @@ body {
     position: fixed;
     height: 100vh;
     overflow-y: auto;
+    overflow-x: hidden;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
     transition: width 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
     display: flex;
@@ -144,8 +145,8 @@ body {
 .sidebar-collapse-btn {
     margin-top: auto;
     margin-bottom: 20px;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     padding: 0;
     border: 1px solid #1c2431;
     background-color: transparent;
@@ -156,7 +157,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .sidebar-collapse-btn:hover {
@@ -474,9 +475,9 @@ body {
 }
 
 .suggestion-image {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
     object-fit: cover;
     margin-right: 12px;
     flex-shrink: 0;
@@ -522,9 +523,14 @@ body {
     font-size: 32px;
     font-weight: 700;
     color: var(--text-primary);
-    margin-top: 4px;
+    margin-top: 60px;
     margin-bottom: 24px;
     line-height: 1.2;
+}
+
+/* Page headers that need to be below search bar */
+.page > h2:first-child {
+    margin-top: 60px;
 }
 
 .icon-btn {
