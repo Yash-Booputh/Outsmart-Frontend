@@ -65,7 +65,8 @@ var app = new Vue({
 
         // Search suggestions
         searchSuggestions: [],
-        showSuggestions: false
+        showSuggestions: false,
+        searchCompleted: false
     },
     computed: {
         sortedLessons: function () {
@@ -230,6 +231,7 @@ var app = new Vue({
             // If search query is empty, clear suggestions and fetch all lessons
             if (!this.searchQuery || this.searchQuery.trim() === '') {
                 this.searchSuggestions = [];
+                this.searchCompleted = false;
                 this.fetchLessons();
                 return;
             }
@@ -245,10 +247,12 @@ var app = new Vue({
                 .then(function (data) {
                     this.searchSuggestions = data.slice(0, 5); // Limit to 5 suggestions
                     this.lessons = data;
+                    this.searchCompleted = true;
                 }.bind(this))
                 .catch(function (error) {
                     console.error('Error searching lessons:', error);
                     this.searchSuggestions = [];
+                    this.searchCompleted = true;
                 });
         },
         selectSuggestion: function (lesson) {

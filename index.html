@@ -68,7 +68,7 @@
                             v-on:input="searchLessonsWithSuggestions"
                             v-on:focus="showSuggestions = true"
                             v-on:blur="hideSuggestionsDelayed">
-                        <div class="search-suggestions" v-if="showSuggestions && searchQuery.length > 0">
+                        <div class="search-suggestions" v-if="showSuggestions && searchQuery.length > 0 && searchCompleted">
                             <div class="search-suggestion-item"
                                  v-for="suggestion in searchSuggestions"
                                  v-bind:key="suggestion._id"
@@ -797,7 +797,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
-    <script src="./js/app.js?v=2"></script>
+    <script src="./js/app.js?v=3"></script>
 </body>
 
 </html>
