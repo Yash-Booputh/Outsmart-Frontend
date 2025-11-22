@@ -374,6 +374,10 @@ body {
     color: var(--text-primary);
 }
 
+[data-theme="dark"] .header-search-input {
+    border-color: #fff;
+}
+
 [data-theme="dark"] .header-search-input:focus {
     box-shadow: 0 0 0 3px rgba(243, 244, 246, 0.1);
 }
