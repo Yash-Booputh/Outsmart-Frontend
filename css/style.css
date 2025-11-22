@@ -380,6 +380,14 @@ body {
     box-shadow: none !important;
 }
 
+.btn {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
 .btn-primary:active {
     background-color: #1a2435 !important;
     border-color: #1a2435 !important;
@@ -387,6 +395,28 @@ body {
 }
 
 .btn-primary:focus {
+    box-shadow: none !important;
+}
+
+/* Outline dark button */
+.btn-outline-dark {
+    color: #1c2431;
+    border-color: #1c2431;
+}
+
+.btn-outline-dark:hover {
+    color: #fff;
+    background-color: #1c2431;
+    border-color: #1c2431;
+}
+
+.btn-outline-dark:active {
+    background-color: #1a2435 !important;
+    border-color: #1a2435 !important;
+    color: #fff !important;
+}
+
+.btn-outline-dark:focus {
     box-shadow: none !important;
 }
 
