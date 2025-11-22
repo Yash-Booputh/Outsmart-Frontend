@@ -166,6 +166,7 @@ body {
 .sidebar.collapsed .logo {
     display: flex;
     justify-content: center;
+    cursor: pointer;
 }
 
 .sidebar.collapsed .sidebar-label {

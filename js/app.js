@@ -1,7 +1,7 @@
 var app = new Vue({
     el: '#app',
     data: {
-        currentPage: 'dashboard',
+        currentPage: 'home',
         orderConfirmed: false,
         isDarkMode: false,
         lessons: [],
@@ -44,7 +44,7 @@ var app = new Vue({
 
         // Lesson detail page data
         selectedLesson: null,
-        previousPage: 'dashboard',
+        previousPage: 'home',
         currentImageIndex: 0,
 
         apiURL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')

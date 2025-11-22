@@ -14,7 +14,7 @@
     <div id="app">
         <!-- Sidebar -->
         <div class="sidebar" v-bind:class="{'collapsed': sidebarCollapsed}">
-            <div class="logo" v-on:click="currentPage = 'dashboard'" style="cursor: pointer;">
+            <div class="logo" v-on:click="currentPage = 'home'" style="cursor: pointer;">
                 <img src="assets/images/mascot_logo.png" alt="OutSmart Mascot" class="logo-mascot">
                 <div class="logo-text">
                     <h2 class="fw-bolder">OUTSMART</h2>
@@ -24,9 +24,9 @@
 
             <div class="sidebar-section">
                 <p class="sidebar-label">General</p>
-                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'dashboard'}"
-                    v-on:click="currentPage = 'dashboard'" v-bind:title="sidebarCollapsed ? 'Dashboard' : ''">
-                    <i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span>
+                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'home'}"
+                    v-on:click="currentPage = 'home'" v-bind:title="sidebarCollapsed ? 'Home' : ''">
+                    <i class="fas fa-home"></i> <span class="sidebar-text">Home</span>
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'lessons'}"
                     v-on:click="currentPage = 'lessons'" v-bind:title="sidebarCollapsed ? 'All Lessons' : ''">
@@ -96,8 +96,8 @@
                 </button>
             </div>
 
-            <!-- Dashboard Page -->
-            <div v-if="currentPage === 'dashboard'" class="page">
+            <!-- Home Page -->
+            <div v-if="currentPage === 'home'" class="page">
                 <!-- Hero Section -->
                 <div class="hero-section">
                     <div class="row align-items-center">
@@ -824,7 +824,7 @@
                 <div class="footer-left">
                     <h3>OUT<span>SMART</span></h3>
                     <div class="footer-links">
-                        <a href="#" v-on:click.prevent="currentPage = 'dashboard'">Home</a>
+                        <a href="#" v-on:click.prevent="currentPage = 'home'">Home</a>
                         <span>|</span>
                         <a href="#" v-on:click.prevent="currentPage = 'lessons'">Lessons</a>
                         <span>|</span>
@@ -872,8 +872,8 @@
                         <h2 class="mb-3">Order Confirmed!</h2>
                         <p class="text-muted mb-4">Your order has been successfully submitted.</p>
                         <button class="btn btn-primary btn-lg px-5"
-                            v-on:click="orderConfirmed = false; currentPage = 'dashboard'">
-                            <i class="fas fa-home me-2"></i> Back to Dashboard
+                            v-on:click="orderConfirmed = false; currentPage = 'home'">
+                            <i class="fas fa-home me-2"></i> Back to Home
                         </button>
                     </div>
                 </div>
