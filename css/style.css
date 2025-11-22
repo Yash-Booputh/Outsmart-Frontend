@@ -335,7 +335,7 @@ body {
 .header-search-input {
     width: 100%;
     padding: 10px 36px 10px 38px;
-    border: 1px solid #101825;
+    border: 1px solid var(--search-border-color, #101825);
     border-radius: 20px;
     background-color: var(--card-bg);
     color: var(--text-primary);
@@ -349,7 +349,7 @@ body {
 
 .header-search-input:focus {
     outline: none;
-    border-color: var(--primary);
+    border-color: var(--search-border-color, #101825);
     box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
 }
 
@@ -379,6 +379,7 @@ body {
 }
 
 [data-theme="dark"] .header-search-input:focus {
+    border-color: #fff;
     box-shadow: 0 0 0 3px rgba(243, 244, 246, 0.1);
 }
 
