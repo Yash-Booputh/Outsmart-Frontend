@@ -473,6 +473,15 @@ body {
     font-size: 14px;
 }
 
+.suggestion-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
 .suggestion-info {
     display: flex;
     flex-direction: column;

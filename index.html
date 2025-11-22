@@ -76,7 +76,9 @@
                                  v-for="suggestion in searchSuggestions"
                                  v-bind:key="suggestion._id"
                                  v-on:mousedown="selectSuggestion(suggestion)">
-                                <i class="fas fa-book me-2"></i>
+                                <img v-bind:src="imagesURL + '/' + suggestion.image"
+                                     v-bind:alt="suggestion.subject"
+                                     class="suggestion-image">
                                 <div class="suggestion-info">
                                     <span class="suggestion-subject">{{ suggestion.subject }}</span>
                                     <span class="suggestion-location">{{ suggestion.location }}</span>
