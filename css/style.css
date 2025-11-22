@@ -292,6 +292,9 @@ body {
     width: calc(100% - 260px);
     position: relative;
     transition: margin-left 0.3s ease, width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .main-content.sidebar-collapsed {
@@ -531,6 +534,194 @@ body {
     margin-top: 60px;
 }
 
+/* Footer */
+.app-footer {
+    margin-top: 80px;
+    margin-left: -32px;
+    margin-right: -32px;
+    margin-bottom: -32px;
+    padding: 10px 40px;
+    background-color: #fff;
+    color: #101825;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+[data-theme="dark"] .app-footer {
+    background-color: #101825;
+    color: #fff;
+}
+
+.app-footer .footer-left,
+.app-footer .footer-center,
+.app-footer .footer-right {
+    flex: 1;
+}
+
+.app-footer .footer-left {
+    width: 40%;
+    text-align: left;
+}
+
+.app-footer .footer-left h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    color: #101825;
+}
+
+[data-theme="dark"] .app-footer .footer-left h3 {
+    color: #fff;
+}
+
+.app-footer .footer-left h3 span {
+    color: var(--primary);
+}
+
+.app-footer .footer-links {
+    margin-top: 8px;
+}
+
+.app-footer .footer-links a {
+    color: rgba(16, 24, 37, 0.7);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.app-footer .footer-links a:hover {
+    color: #101825;
+}
+
+[data-theme="dark"] .app-footer .footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .app-footer .footer-links a:hover {
+    color: #fff;
+}
+
+.app-footer .footer-links span {
+    color: rgba(16, 24, 37, 0.4);
+    margin: 0 8px;
+    font-size: 13px;
+}
+
+[data-theme="dark"] .app-footer .footer-links span {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.app-footer .footer-copyright {
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(16, 24, 37, 0.5);
+}
+
+[data-theme="dark"] .app-footer .footer-copyright {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.app-footer .footer-center {
+    width: 30%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-footer .footer-center-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.app-footer .footer-contact-item {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    font-size: 12px;
+    color: rgba(16, 24, 37, 0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.app-footer a.footer-contact-item:hover {
+    color: #101825;
+}
+
+[data-theme="dark"] .app-footer .footer-contact-item {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .app-footer a.footer-contact-item:hover {
+    color: #fff;
+}
+
+.app-footer .footer-contact-item i {
+    margin-right: 6px;
+    font-size: 12px;
+    color: var(--primary);
+}
+
+.app-footer .footer-right {
+    width: 28%;
+    text-align: right;
+}
+
+.app-footer .footer-icons {
+    display: inline-flex;
+    gap: 8px;
+}
+
+.app-footer .footer-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background-color: #101825;
+    border-radius: 50%;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.app-footer .footer-icons a:hover {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+[data-theme="dark"] .app-footer .footer-icons a {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .app-footer .footer-icons a:hover {
+    background-color: #fff;
+    color: #101825;
+}
+
+.app-footer .footer-icons a i {
+    font-size: 12px;
+}
+
+/* Footer Responsive */
+@media (max-width: 880px) {
+    .app-footer .footer-left,
+    .app-footer .footer-center,
+    .app-footer .footer-right {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .app-footer .footer-icons {
+        justify-content: center;
+    }
+}
+
 .icon-btn {
     width: 44px;
     height: 44px;
@@ -623,6 +814,7 @@ body {
 /* Page Animation */
 .page {
     animation: fadeIn 0.3s ease;
+    flex: 1;
 }
 
 @keyframes fadeIn {
