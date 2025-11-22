@@ -14,7 +14,7 @@
     <div id="app">
         <!-- Sidebar -->
         <div class="sidebar" v-bind:class="{'collapsed': sidebarCollapsed}">
-            <div class="logo">
+            <div class="logo" v-on:click="currentPage = 'dashboard'" style="cursor: pointer;">
                 <img src="assets/images/mascot_logo.png" alt="OutSmart Mascot" class="logo-mascot">
                 <div class="logo-text">
                     <h2 class="fw-bolder">OUTSMART</h2>
