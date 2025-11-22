@@ -98,6 +98,69 @@
     border-radius: 6px;
 }
 
+/* Testimonial Cards */
+.testimonial-card {
+    background: var(--card-bg);
+    transition: transform 0.3s ease;
+    border: 1px solid #101825 !important;
+}
+
+[data-theme="dark"] .testimonial-card {
+    border-color: #fff !important;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.testimonial-text {
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.testimonial-author {
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-author strong {
+    color: var(--text-primary);
+}
+
+.testimonial-author span {
+    font-size: 0.85rem;
+}
+
+.testimonial-stars i {
+    color: #fbbf24;
+}
+
+/* Available Lessons Badge */
+.available-badge {
+    background-color: #fff;
+    color: #101825;
+    border: 2px solid #101825;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    position: relative;
+    top: 4px;
+}
+
+[data-theme="dark"] .available-badge {
+    background-color: #101825;
+    color: #fff;
+    border-color: #fff;
+}
+
+/* About Us page dark mode text colors */
+[data-theme="dark"] .page strong,
+[data-theme="dark"] .page .list-unstyled li,
+[data-theme="dark"] .page .col-lg-4 .card-body p {
+    color: #99a1af;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -267,6 +330,7 @@ body {
     font-style: italic;
     font-weight: 500;
     text-align: center;
+    font-family: 'Georgia', serif;
 }
 
 .logo i {
@@ -605,7 +669,7 @@ body {
     margin-left: -32px;
     margin-right: -32px;
     margin-bottom: -32px;
-    padding: 10px 40px;
+    padding: 30px 40px;
     background-color: #fff;
     color: #101825;
     text-align: center;
@@ -614,8 +678,53 @@ body {
     justify-content: space-between;
 }
 
+.footer-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.app-footer .footer-center h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    color: #101825;
+}
+
+[data-theme="dark"] .app-footer .footer-center h3 {
+    color: #fff;
+}
+
+.app-footer .footer-center h3 span {
+    color: #101825;
+}
+
+[data-theme="dark"] .app-footer .footer-center h3 span {
+    color: #fff;
+}
+
+.footer-mascot {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.footer-slogan {
+    font-size: 0.85rem;
+    margin: 0;
+    color: #6b7280;
+    font-style: italic;
+    font-family: 'Georgia', serif;
+}
+
+[data-theme="dark"] .footer-slogan {
+    color: #9ca3af;
+}
+
 [data-theme="dark"] .app-footer {
-    background-color: #101825;
+    background-color: #111828;
     color: #fff;
 }
 
@@ -690,7 +799,7 @@ body {
 
 .app-footer .footer-center {
     width: 30%;
-    text-align: left;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -996,14 +1105,14 @@ body {
 
 /* Outline dark button */
 .btn-outline-dark {
-    color: #1c2431;
-    border-color: #1c2431;
+    color: #1b2430;
+    border-color: #1b2430;
 }
 
 .btn-outline-dark:hover {
     color: #fff;
-    background-color: #1c2431;
-    border-color: #1c2431;
+    background-color: #1b2430;
+    border-color: #1b2430;
 }
 
 .btn-outline-dark:active {
