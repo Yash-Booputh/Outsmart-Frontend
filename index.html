@@ -34,7 +34,7 @@
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'courses'}"
                     v-on:click="currentPage = 'courses'" v-bind:title="sidebarCollapsed ? 'My Courses' : ''">
-                    <i class="fas fa-chalkboard-teacher"></i> <span class="sidebar-text">My Courses</span>
+                    <i class="fas fa-book-open"></i> <span class="sidebar-text">My Courses</span>
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'cart'}"
                     v-on:click="currentPage = 'cart'" v-bind:title="sidebarCollapsed ? 'Cart' : ''">
@@ -75,7 +75,7 @@
                 <div class="hero-section">
                     <div class="row align-items-center">
                         <div class="col-lg-6">
-                            <h1 class="hero-title">Welcome, {{ userProfile.name || 'Guest' }}!</h1>
+                            <h1 class="hero-title">Hello There!</h1>
                             <p class="hero-subtitle">Discover after-school lessons that inspire learning and creativity
                             </p>
                             <p class="hero-description">Browse our extensive catalog of engaging lessons designed for

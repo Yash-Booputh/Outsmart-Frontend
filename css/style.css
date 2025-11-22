@@ -114,6 +114,7 @@ body {
 .sidebar.collapsed .sidebar-item {
     justify-content: center;
     padding: 12px;
+    position: relative;
 }
 
 .sidebar.collapsed .sidebar-item i {
@@ -123,14 +124,20 @@ body {
 
 .sidebar.collapsed .sidebar-item .badge {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: -1px;
+    right: -3.5px;
     font-size: 10px;
-    padding: 2px 5px;
-}
-
-.sidebar.collapsed .sidebar-section {
-    position: relative;
+    padding: 3px 5px;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    border: none;
+    background-color: transparent;
+    color: #19202f;
+    font-weight: bold;
 }
 
 /* Sidebar collapse button */
@@ -522,6 +529,30 @@ body {
     box-shadow: none !important;
 }
 
+/* Dark mode primary and outline-dark buttons */
+[data-theme="dark"] .btn-primary:active {
+    background-color: #fff !important;
+    border-color: #fff !important;
+    color: #1c2431 !important;
+}
+
+[data-theme="dark"] .btn-outline-dark {
+    color: #fff;
+    border-color: #fff;
+}
+
+[data-theme="dark"] .btn-outline-dark:hover {
+    color: #1c2431;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+[data-theme="dark"] .btn-outline-dark:active {
+    background-color: #e5e7eb !important;
+    border-color: #e5e7eb !important;
+    color: #1c2431 !important;
+}
+
 /* Cart control buttons */
 .btn-cart-control {
     color: #1c2431;
@@ -545,6 +576,50 @@ body {
     background-color: #1a2435 !important;
     border-color: #1a2435 !important;
     color: #fff !important;
+}
+
+/* Dark mode cart controls */
+[data-theme="dark"] .btn-cart-control {
+    color: #fff;
+    border-color: #fff;
+}
+
+[data-theme="dark"] .btn-cart-control:hover {
+    color: #1c2431;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+[data-theme="dark"] .btn-cart-control:disabled {
+    color: #fff;
+    border-color: #fff;
+}
+
+[data-theme="dark"] .btn-cart-control:active {
+    background-color: #e5e7eb !important;
+    border-color: #e5e7eb !important;
+    color: #1c2431 !important;
+}
+
+/* Dark mode sidebar collapse button */
+[data-theme="dark"] .sidebar-collapse-btn {
+    color: #fff;
+    border-color: #fff;
+}
+
+[data-theme="dark"] .sidebar-collapse-btn:hover {
+    background-color: #fff;
+    color: #1c2431;
+}
+
+[data-theme="dark"] .sidebar-collapse-btn:active {
+    background-color: #e5e7eb;
+    border-color: #e5e7eb;
+}
+
+/* Dark mode collapsed cart counter */
+[data-theme="dark"] .sidebar.collapsed .sidebar-item .badge {
+    color: #fff;
 }
 
 /* Lesson Icon with Gradient */
