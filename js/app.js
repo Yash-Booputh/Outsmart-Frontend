@@ -61,7 +61,11 @@ var app = new Vue({
             'All necessary equipment',
             'Progress tracking',
             'Certificate upon completion'
-        ]
+        ],
+
+        // Search suggestions
+        searchSuggestions: [],
+        showSuggestions: false
     },
     computed: {
         sortedLessons: function () {
@@ -221,6 +225,43 @@ var app = new Vue({
                     console.error('Error searching lessons:', error);
                     alert('Search failed. Please try again.');
                 });
+        },
+        searchLessonsWithSuggestions: function () {
+            // If search query is empty, clear suggestions and fetch all lessons
+            if (!this.searchQuery || this.searchQuery.trim() === '') {
+                this.searchSuggestions = [];
+                this.fetchLessons();
+                return;
+            }
+
+            // Call backend search API for suggestions
+            fetch(this.apiURL + '/search?q=' + encodeURIComponent(this.searchQuery))
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Search failed');
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    this.searchSuggestions = data.slice(0, 5); // Limit to 5 suggestions
+                    this.lessons = data;
+                }.bind(this))
+                .catch(function (error) {
+                    console.error('Error searching lessons:', error);
+                    this.searchSuggestions = [];
+                });
+        },
+        selectSuggestion: function (lesson) {
+            this.searchQuery = lesson.subject;
+            this.searchSuggestions = [];
+            this.showSuggestions = false;
+            this.viewLesson(lesson);
+        },
+        hideSuggestionsDelayed: function () {
+            var self = this;
+            setTimeout(function () {
+                self.showSuggestions = false;
+            }, 200);
         },
         viewLesson: function (lesson) {
             this.selectedLesson = lesson;

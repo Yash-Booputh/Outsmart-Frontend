@@ -60,10 +60,31 @@
         <div class="main-content" v-bind:class="{'sidebar-collapsed': sidebarCollapsed}">
             <!-- Top Action Bar -->
             <div class="top-action-bar">
+                <div class="header-search-container">
+                    <div class="header-search-box">
+                        <i class="fas fa-search header-search-icon"></i>
+                        <input type="text" class="header-search-input" placeholder="Search lessons..."
+                            v-model="searchQuery"
+                            v-on:input="searchLessonsWithSuggestions"
+                            v-on:focus="showSuggestions = true"
+                            v-on:blur="hideSuggestionsDelayed">
+                        <div class="search-suggestions" v-if="showSuggestions && searchSuggestions.length > 0">
+                            <div class="search-suggestion-item"
+                                 v-for="suggestion in searchSuggestions"
+                                 v-bind:key="suggestion._id"
+                                 v-on:mousedown="selectSuggestion(suggestion)">
+                                <i class="fas fa-book me-2"></i>
+                                <div class="suggestion-info">
+                                    <span class="suggestion-subject">{{ suggestion.subject }}</span>
+                                    <span class="suggestion-location">{{ suggestion.location }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <button class="theme-toggle" v-on:click="toggleTheme">
                     <i v-bind:class="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
                 </button>
-                <button class="icon-btn"><i class="fas fa-bell"></i></button>
             </div>
 
             <!-- Dashboard Page -->
@@ -327,10 +348,14 @@
 
             <!-- Lesson Detail Page -->
             <div v-if="currentPage === 'lessonDetail'" class="page">
+                <h2 class="mb-4">More Details</h2>
+
                 <!-- Back Button -->
-                <button class="btn btn-outline-secondary mb-4" v-on:click="currentPage = previousPage">
-                    <i class="fas fa-arrow-left me-2"></i> Back
-                </button>
+                <div class="mb-4">
+                    <button class="btn btn-outline-secondary btn-sm" v-on:click="currentPage = previousPage">
+                        <i class="fas fa-arrow-left me-2"></i> Back
+                    </button>
+                </div>
 
                 <div class="row" v-if="selectedLesson">
                     <!-- Left Column - Images -->
@@ -418,11 +443,11 @@
                             </div>
 
                             <!-- Enroll Button -->
-                            <button class="btn btn-primary btn-lg w-100"
+                            <button class="btn btn-primary btn-lg w-100 enroll-btn-detail"
                                     v-on:click="addToCart(selectedLesson)"
                                     v-bind:disabled="selectedLesson.spaces === 0">
                                 <i class="fas fa-shopping-cart me-2"></i>
-                                {{ selectedLesson.spaces === 0 ? 'Sold Out' : 'Enroll Now' }}
+                                {{ selectedLesson.spaces === 0 ? 'No Available Seats' : 'Enroll Now' }}
                             </button>
                         </div>
                     </div>
