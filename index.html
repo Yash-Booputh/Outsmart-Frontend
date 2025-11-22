@@ -246,7 +246,27 @@
                     </button>
                 </div>
 
-                <div class="row g-4">
+                <!-- Skeleton Loading -->
+                <div class="row g-4" v-if="isLoading">
+                    <div class="col-lg-4 col-md-6" v-for="n in 6" v-bind:key="'skeleton-' + n">
+                        <div class="card lesson-card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="skeleton skeleton-image"></div>
+                                <div class="skeleton skeleton-title"></div>
+                                <div class="skeleton skeleton-text"></div>
+                                <div class="skeleton skeleton-text-short"></div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="skeleton skeleton-price"></div>
+                                    <div class="skeleton skeleton-badge"></div>
+                                </div>
+                                <div class="skeleton skeleton-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actual Lessons -->
+                <div class="row g-4" v-else>
                     <div class="col-lg-4 col-md-6" v-for="lesson in lessons.slice(0, 6)" v-bind:key="lesson.id">
                         <div class="card lesson-card border-0 shadow-sm h-100">
                             <div class="card-body">
@@ -313,7 +333,27 @@
                     </div>
                 </div>
 
-                <div class="row g-4">
+                <!-- Skeleton Loading -->
+                <div class="row g-4" v-if="isLoading">
+                    <div class="col-lg-4 col-md-6" v-for="n in 12" v-bind:key="'skeleton-lessons-' + n">
+                        <div class="card lesson-card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="skeleton skeleton-image"></div>
+                                <div class="skeleton skeleton-title"></div>
+                                <div class="skeleton skeleton-text"></div>
+                                <div class="skeleton skeleton-text-short"></div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="skeleton skeleton-price"></div>
+                                    <div class="skeleton skeleton-badge"></div>
+                                </div>
+                                <div class="skeleton skeleton-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actual Lessons -->
+                <div class="row g-4" v-else>
                     <div class="col-lg-4 col-md-6" v-for="lesson in sortedLessons" v-bind:key="lesson.id">
                         <div class="card lesson-card border-0 shadow-sm h-100 clickable-card" v-on:click="viewLesson(lesson)">
                             <div class="card-body">
@@ -349,7 +389,7 @@
                     </div>
                 </div>
 
-                <div v-if="sortedLessons.length === 0" class="text-center py-5">
+                <div v-if="!isLoading && sortedLessons.length === 0" class="text-center py-5">
                     <i class="fas fa-search fa-4x text-muted mb-3"></i>
                     <p class="text-muted fs-5">No lessons found matching your search.</p>
                 </div>

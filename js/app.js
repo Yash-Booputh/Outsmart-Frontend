@@ -5,6 +5,7 @@ var app = new Vue({
         orderConfirmed: false,
         isDarkMode: false,
         lessons: [],
+        isLoading: true,
         cart: [],
         sortAttribute: 'subject',
         sortOrder: 'ascending',
@@ -460,6 +461,7 @@ var app = new Vue({
         },
         fetchLessons: function () {
             // GET lessons from backend (3%)
+            this.isLoading = true;
             fetch(this.apiURL + '/lessons')
                 .then(function (response) {
                     if (!response.ok) {
@@ -469,6 +471,7 @@ var app = new Vue({
                 })
                 .then(function (data) {
                     this.lessons = data;
+                    this.isLoading = false;
                 }.bind(this))
                 .catch(function (error) {
                     console.error('Error fetching lessons:', error);
@@ -487,6 +490,7 @@ var app = new Vue({
                         { _id: '11', subject: 'French Language', location: 'Port Louis', price: 1400, spaces: 5, icon: 'fas fa-language', image: 'french.jpg', rating: 4 },
                         { _id: '12', subject: 'Swimming', location: 'Pereybere', price: 1700, spaces: 5, icon: 'fas fa-swimmer', image: 'swimming.jpg', rating: 5 }
                     ];
+                    this.isLoading = false;
                 }.bind(this));
         },
         enableProfileEdit: function () {
