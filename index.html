@@ -68,7 +68,7 @@
                             v-on:input="searchLessonsWithSuggestions"
                             v-on:focus="showSuggestions = true"
                             v-on:blur="hideSuggestionsDelayed">
-                        <div class="search-suggestions" v-if="showSuggestions && searchSuggestions.length > 0">
+                        <div class="search-suggestions" v-if="showSuggestions && searchQuery.length > 0">
                             <div class="search-suggestion-item"
                                  v-for="suggestion in searchSuggestions"
                                  v-bind:key="suggestion._id"
@@ -78,6 +78,10 @@
                                     <span class="suggestion-subject">{{ suggestion.subject }}</span>
                                     <span class="suggestion-location">{{ suggestion.location }}</span>
                                 </div>
+                            </div>
+                            <div class="search-no-results" v-if="searchSuggestions.length === 0">
+                                <i class="fas fa-search me-2"></i>
+                                No lessons found for "{{ searchQuery }}"
                             </div>
                         </div>
                     </div>

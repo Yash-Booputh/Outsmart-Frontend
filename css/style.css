@@ -430,6 +430,17 @@ body {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
+.search-no-results {
+    padding: 16px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.search-no-results i {
+    color: var(--text-secondary);
+}
+
 /* Page Title */
 .page-title {
     font-size: 32px;
