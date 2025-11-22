@@ -334,7 +334,7 @@ body {
 
 .header-search-input {
     width: 100%;
-    padding: 10px 16px 10px 38px;
+    padding: 10px 36px 10px 38px;
     border: 1px solid #101825;
     border-radius: 20px;
     background-color: var(--card-bg);
@@ -402,7 +402,27 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     max-height: 300px;
     overflow-y: auto;
+    overflow-x: hidden;
     z-index: 1000;
+}
+
+/* Custom scrollbar for search suggestions */
+.search-suggestions::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-suggestions::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
 }
 
 .search-suggestion-item {
