@@ -39,6 +39,7 @@ var app = new Vue({
         },
         currentSlide: 0,
         slideshowInterval: null,
+        sidebarCollapsed: false,
 
         // Lesson detail page data
         selectedLesson: null,
@@ -184,6 +185,18 @@ var app = new Vue({
             } else {
                 document.documentElement.removeAttribute('data-theme');
                 localStorage.setItem('theme', 'light');
+            }
+        },
+        toggleSidebar: function () {
+            this.sidebarCollapsed = !this.sidebarCollapsed;
+            localStorage.setItem('sidebarCollapsed', this.sidebarCollapsed);
+        },
+        handleResize: function () {
+            if (window.innerWidth <= 992) {
+                this.sidebarCollapsed = true;
+            } else {
+                let saved = localStorage.getItem('sidebarCollapsed');
+                this.sidebarCollapsed = saved === 'true';
             }
         },
         searchLessons: function () {
@@ -498,9 +511,14 @@ var app = new Vue({
             this.settings = JSON.parse(savedSettings);
         }
 
+        // Initialize sidebar state
+        this.handleResize();
+        window.addEventListener('resize', this.handleResize);
+
         this.startSlideshow();
     },
     beforeDestroy: function () {
         this.stopSlideshow();
+        window.removeEventListener('resize', this.handleResize);
     }
 });

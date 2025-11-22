@@ -13,7 +13,7 @@
 <body>
     <div id="app">
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" v-bind:class="{'collapsed': sidebarCollapsed}">
             <div class="logo">
                 <img src="assets/images/mascot_logo.png" alt="OutSmart Mascot" class="logo-mascot">
                 <div class="logo-text">
@@ -25,20 +25,20 @@
             <div class="sidebar-section">
                 <p class="sidebar-label">General</p>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'dashboard'}"
-                    v-on:click="currentPage = 'dashboard'">
-                    <i class="fas fa-home"></i> Dashboard
+                    v-on:click="currentPage = 'dashboard'" v-bind:title="sidebarCollapsed ? 'Dashboard' : ''">
+                    <i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span>
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'lessons'}"
-                    v-on:click="currentPage = 'lessons'">
-                    <i class="fas fa-book"></i> All Lessons
+                    v-on:click="currentPage = 'lessons'" v-bind:title="sidebarCollapsed ? 'All Lessons' : ''">
+                    <i class="fas fa-book"></i> <span class="sidebar-text">All Lessons</span>
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'courses'}"
-                    v-on:click="currentPage = 'courses'">
-                    <i class="fas fa-chalkboard-teacher"></i> My Courses
+                    v-on:click="currentPage = 'courses'" v-bind:title="sidebarCollapsed ? 'My Courses' : ''">
+                    <i class="fas fa-chalkboard-teacher"></i> <span class="sidebar-text">My Courses</span>
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'cart'}"
-                    v-on:click="currentPage = 'cart'">
-                    <i class="fas fa-shopping-cart"></i> Cart
+                    v-on:click="currentPage = 'cart'" v-bind:title="sidebarCollapsed ? 'Cart' : ''">
+                    <i class="fas fa-shopping-cart"></i> <span class="sidebar-text">Cart</span>
                     <span class="badge" v-if="cartCount > 0">{{ cartCount }}</span>
                 </button>
             </div>
@@ -46,14 +46,18 @@
             <div class="sidebar-section">
                 <p class="sidebar-label">Account</p>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'settings'}"
-                    v-on:click="currentPage = 'settings'">
-                    <i class="fas fa-cog"></i> Settings
+                    v-on:click="currentPage = 'settings'" v-bind:title="sidebarCollapsed ? 'Settings' : ''">
+                    <i class="fas fa-cog"></i> <span class="sidebar-text">Settings</span>
                 </button>
             </div>
+
+            <button class="sidebar-collapse-btn" v-on:click="toggleSidebar">
+                <i v-bind:class="sidebarCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"></i>
+            </button>
         </div>
 
         <!-- Main Content -->
-        <div class="main-content">
+        <div class="main-content" v-bind:class="{'sidebar-collapsed': sidebarCollapsed}">
             <!-- Top Action Bar -->
             <div class="top-action-bar">
                 <button class="theme-toggle" v-on:click="toggleTheme">
