@@ -605,7 +605,7 @@
                 <div v-if="cart.length > 0">
                     <div class="row">
                         <div class="col-lg-8 mb-4">
-                            <div class="card border-0 shadow-sm" v-for="(item, index) in cart" v-bind:key="index">
+                            <div class="card border-0 shadow-sm mb-3" v-for="(item, index) in cart" v-bind:key="index">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
@@ -625,9 +625,24 @@
                                             </p>
                                         </div>
                                         <div class="col-auto">
-                                            <button class="btn btn-outline-danger" v-on:click="removeFromCart(index)">
-                                                <i class="fas fa-trash me-1"></i> Remove
-                                            </button>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-cart-control btn-sm"
+                                                            v-on:click="decreaseQuantity(index)"
+                                                            v-bind:disabled="item.quantity <= 1">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                    <span class="btn btn-cart-control btn-sm disabled">{{ item.quantity }}</span>
+                                                    <button class="btn btn-cart-control btn-sm"
+                                                            v-on:click="increaseQuantity(index)"
+                                                            v-bind:disabled="getAvailableSpaces(item.id) === 0">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <button class="btn btn-cart-control btn-sm" v-on:click="removeFromCart(index)">
+                                                    <i class="fas fa-trash me-1"></i> Remove
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -649,7 +664,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-4">
+                                    <div class="mb-3">
                                         <label class="form-label fw-semibold">Phone</label>
                                         <input type="text" class="form-control"
                                             v-bind:class="{'is-invalid': checkoutInfo.phone && !isValidPhone}"
@@ -657,6 +672,12 @@
                                         <div class="invalid-feedback">
                                             Phone must contain only numbers
                                         </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">Email <span class="text-muted fw-normal">(optional)</span></label>
+                                        <input type="email" class="form-control"
+                                            v-model="checkoutInfo.email" placeholder="Enter your email">
                                     </div>
 
                                     <div class="border-top pt-3 mb-3">

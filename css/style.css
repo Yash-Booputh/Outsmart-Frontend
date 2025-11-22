@@ -390,6 +390,31 @@ body {
     box-shadow: none !important;
 }
 
+/* Cart control buttons */
+.btn-cart-control {
+    color: #1c2431;
+    border-color: #1c2431;
+    background-color: transparent;
+}
+
+.btn-cart-control:hover {
+    color: #fff;
+    background-color: #1c2431;
+    border-color: #1c2431;
+}
+
+.btn-cart-control:disabled {
+    color: #1c2431;
+    border-color: #1c2431;
+    opacity: 0.5;
+}
+
+.btn-cart-control:active {
+    background-color: #1a2435 !important;
+    border-color: #1a2435 !important;
+    color: #fff !important;
+}
+
 /* Lesson Icon with Gradient */
 .lesson-icon {
     width: 70px;

@@ -11,7 +11,8 @@ var app = new Vue({
         searchQuery: '',
         checkoutInfo: {
             name: '',
-            phone: ''
+            phone: '',
+            email: ''
         },
         userProfile: {
             name: '',
@@ -251,10 +252,47 @@ var app = new Vue({
 
             this.cart.splice(index, 1);
         },
+        increaseQuantity: function (index) {
+            let item = this.cart[index];
+
+            // Find the lesson and check if there are available spaces
+            for (let i = 0; i < this.lessons.length; i++) {
+                if (this.lessons[i]._id === item.id) {
+                    if (this.lessons[i].spaces > 0) {
+                        item.quantity++;
+                        this.lessons[i].spaces--;
+                    }
+                    break;
+                }
+            }
+        },
+        decreaseQuantity: function (index) {
+            let item = this.cart[index];
+
+            if (item.quantity > 1) {
+                item.quantity--;
+                // Restore space to the lesson
+                for (let i = 0; i < this.lessons.length; i++) {
+                    if (this.lessons[i]._id === item.id) {
+                        this.lessons[i].spaces++;
+                        break;
+                    }
+                }
+            }
+        },
+        getAvailableSpaces: function (itemId) {
+            for (let i = 0; i < this.lessons.length; i++) {
+                if (this.lessons[i]._id === itemId) {
+                    return this.lessons[i].spaces;
+                }
+            }
+            return 0;
+        },
         checkout: function () {
             let orderData = {
                 name: this.checkoutInfo.name,
                 phone: this.checkoutInfo.phone,
+                email: this.checkoutInfo.email,
                 lessonIDs: [],
                 spaces: []
             };
@@ -326,6 +364,7 @@ var app = new Vue({
                     this.cart = [];
                     this.checkoutInfo.name = '';
                     this.checkoutInfo.phone = '';
+                    this.checkoutInfo.email = '';
                 }.bind(this))
                 .catch(function (error) {
                     console.error('Error during checkout:', error);
