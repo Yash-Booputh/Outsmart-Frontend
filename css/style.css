@@ -362,6 +362,34 @@ body {
     border-color: var(--primary);
 }
 
+/* Clickable card for All Lessons page */
+.clickable-card {
+    cursor: pointer;
+}
+
+/* Disabled button cursor */
+.btn:disabled {
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
+}
+
+.btn:disabled:active,
+.btn:disabled:focus {
+    background-color: #1a2435 !important;
+    border-color: #1a2435 !important;
+    box-shadow: none !important;
+}
+
+.btn-primary:active {
+    background-color: #1a2435 !important;
+    border-color: #1a2435 !important;
+    box-shadow: none !important;
+}
+
+.btn-primary:focus {
+    box-shadow: none !important;
+}
+
 /* Lesson Icon with Gradient */
 .lesson-icon {
     width: 70px;
