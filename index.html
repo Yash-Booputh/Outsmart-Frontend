@@ -68,6 +68,9 @@
                             v-on:input="searchLessonsWithSuggestions"
                             v-on:focus="showSuggestions = true"
                             v-on:blur="hideSuggestionsDelayed">
+                        <button class="header-search-clear" v-if="searchQuery.length > 0" v-on:click="clearSearch">
+                            <i class="fas fa-times"></i>
+                        </button>
                         <div class="search-suggestions" v-if="showSuggestions && searchQuery.length > 0 && searchCompleted">
                             <div class="search-suggestion-item"
                                  v-for="suggestion in searchSuggestions"
@@ -797,7 +800,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
-    <script src="./js/app.js?v=3"></script>
+    <script src="./js/app.js?v=4"></script>
 </body>
 
 </html>

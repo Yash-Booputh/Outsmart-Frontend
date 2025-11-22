@@ -353,6 +353,27 @@ body {
     box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
 }
 
+.header-search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.header-search-clear:hover {
+    color: var(--text-primary);
+}
+
 [data-theme="dark"] .header-search-input:focus {
     box-shadow: 0 0 0 3px rgba(243, 244, 246, 0.1);
 }

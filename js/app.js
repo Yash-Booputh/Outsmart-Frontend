@@ -267,6 +267,13 @@ var app = new Vue({
                 self.showSuggestions = false;
             }, 200);
         },
+        clearSearch: function () {
+            this.searchQuery = '';
+            this.searchSuggestions = [];
+            this.searchCompleted = false;
+            this.showSuggestions = false;
+            this.fetchLessons();
+        },
         viewLesson: function (lesson) {
             this.selectedLesson = lesson;
             this.previousPage = this.currentPage;
