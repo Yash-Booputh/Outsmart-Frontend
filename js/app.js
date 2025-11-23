@@ -377,6 +377,11 @@ var app = new Vue({
             }
 
             this.cart.splice(index, 1);
+
+            // If cart is empty, go back to lessons page
+            if (this.cart.length === 0) {
+                this.currentPage = 'lessons';
+            }
         },
         increaseQuantity: function (index) {
             let item = this.cart[index];

@@ -32,8 +32,11 @@
                     v-on:click="currentPage = 'lessons'" v-bind:title="sidebarCollapsed ? 'All Lessons' : ''">
                     <i class="fas fa-book"></i> <span class="sidebar-text">All Lessons</span>
                 </button>
-                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'cart'}"
-                    v-on:click="currentPage = 'cart'" v-bind:title="sidebarCollapsed ? 'Cart' : ''">
+                <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'cart', 'disabled': cartCount === 0}"
+                    v-on:click="cartCount > 0 ? (currentPage === 'cart' ? currentPage = 'lessons' : currentPage = 'cart') : null"
+                    v-bind:title="sidebarCollapsed ? 'Cart' : (cartCount === 0 ? 'Cart is empty' : '')"
+                    v-bind:disabled="cartCount === 0"
+                    v-bind:style="cartCount === 0 ? 'cursor: not-allowed;' : ''">
                     <i class="fas fa-shopping-cart"></i> <span class="sidebar-text">Cart</span>
                     <span class="badge" v-if="cartCount > 0">{{ cartCount }}</span>
                 </button>
@@ -111,7 +114,11 @@
                                 <button class="btn btn-primary btn-lg me-3" v-on:click="currentPage = 'lessons'">
                                     <i class="fas fa-book me-2"></i> Browse Lessons
                                 </button>
-                                <button class="btn btn-outline-secondary btn-lg" v-on:click="currentPage = 'cart'">
+                                <button class="btn btn-outline-secondary btn-lg"
+                                    v-on:click="cartCount > 0 ? currentPage = 'cart' : null"
+                                    v-bind:disabled="cartCount === 0"
+                                    v-bind:title="cartCount === 0 ? 'Cart is empty' : ''"
+                                    v-bind:style="cartCount === 0 ? 'cursor: not-allowed;' : ''">
                                     <i class="fas fa-shopping-cart me-2"></i> View Cart
                                 </button>
                             </div>
