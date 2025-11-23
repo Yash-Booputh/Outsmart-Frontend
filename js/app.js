@@ -303,6 +303,9 @@ var app = new Vue({
                 return;
             }
 
+            // Store current query to check if it changed during fetch
+            var currentQuery = this.searchQuery;
+
             // Call backend search API for suggestions
             fetch(this.apiURL + '/search?q=' + encodeURIComponent(this.searchQuery))
                 .then(function (response) {
@@ -312,15 +315,20 @@ var app = new Vue({
                     return response.json();
                 })
                 .then(function (data) {
-                    this.searchSuggestions = data.slice(0, 5); // Limit to 5 suggestions
-                    this.searchResults = data;
-                    this.searchCompleted = true;
+                    // Only update if query hasn't changed
+                    if (this.searchQuery === currentQuery) {
+                        this.searchSuggestions = data.slice(0, 5);
+                        this.searchResults = data;
+                        this.searchCompleted = true;
+                    }
                 }.bind(this))
                 .catch(function (error) {
                     console.error('Error searching lessons:', error);
-                    this.searchSuggestions = [];
-                    this.searchCompleted = true;
-                });
+                    if (this.searchQuery === currentQuery) {
+                        this.searchSuggestions = [];
+                        this.searchCompleted = true;
+                    }
+                }.bind(this));
         },
         selectSuggestion: function (lesson) {
             this.searchQuery = lesson.subject;
