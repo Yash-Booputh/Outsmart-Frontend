@@ -47,7 +47,7 @@ Uses fetch to:
 - Search lessons via backend API
 
 ## Technologies Used
-- Vue.js 2 (CDN version, Options API only, no SFC)
+- Vue.js 2 (CDN version)
 - HTML, CSS, JavaScript
 - Bootstrap
 - Font Awesome
