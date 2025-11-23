@@ -74,11 +74,6 @@ var app = new Vue({
         // Search results (separate from lessons to not affect popular lessons)
         searchResults: null
     },
-    watch: {
-        currentPage: function () {
-            window.scrollTo(0, 0);
-        }
-    },
     computed: {
         // Lessons to display on All Lessons page (uses search results if available)
         displayLessons: function () {
@@ -229,6 +224,14 @@ var app = new Vue({
         }
     },
     methods: {
+        navigateTo: function (page) {
+            // Collapse filter when leaving lessons page
+            if (page !== 'lessons') {
+                this.filterCollapsed = true;
+            }
+            this.currentPage = page;
+            window.scrollTo(0, 0);
+        },
         resetFilters: function () {
             this.filterCategories = [];
             this.filterPriceMax = 2500;

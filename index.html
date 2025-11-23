@@ -14,7 +14,7 @@
     <div id="app" v-cloak>
         <!-- Sidebar -->
         <div class="sidebar" v-bind:class="{'collapsed': sidebarCollapsed}">
-            <div class="logo" v-on:click="currentPage = 'home'" style="cursor: pointer;">
+            <div class="logo" v-on:click="navigateTo('home')" style="cursor: pointer;">
                 <img src="assets/images/mascot_logo.png" alt="OutSmart Mascot" class="logo-mascot">
                 <div class="logo-text">
                     <h2 class="fw-bolder">OUTSMART</h2>
@@ -25,15 +25,15 @@
             <div class="sidebar-section">
                 <p class="sidebar-label">General</p>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'home'}"
-                    v-on:click="currentPage = 'home'" v-bind:title="sidebarCollapsed ? 'Home' : ''">
+                    v-on:click="navigateTo('home')" v-bind:title="sidebarCollapsed ? 'Home' : ''">
                     <i class="fas fa-home"></i> <span class="sidebar-text">Home</span>
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'lessons'}"
-                    v-on:click="currentPage = 'lessons'" v-bind:title="sidebarCollapsed ? 'All Lessons' : ''">
+                    v-on:click="navigateTo('lessons')" v-bind:title="sidebarCollapsed ? 'All Lessons' : ''">
                     <i class="fas fa-book"></i> <span class="sidebar-text">All Lessons</span>
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'cart', 'disabled': cartCount === 0}"
-                    v-on:click="cartCount > 0 ? (currentPage === 'cart' ? currentPage = 'lessons' : currentPage = 'cart') : null"
+                    v-on:click="cartCount > 0 ? (currentPage === 'cart' ? navigateTo('lessons') : navigateTo('cart')) : null"
                     v-bind:title="sidebarCollapsed ? 'Cart' : (cartCount === 0 ? 'Cart is empty' : '')"
                     v-bind:disabled="cartCount === 0"
                     v-bind:style="cartCount === 0 ? 'cursor: not-allowed;' : ''">
@@ -45,11 +45,11 @@
             <div class="sidebar-section">
                 <p class="sidebar-label">Info</p>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'about'}"
-                    v-on:click="currentPage = 'about'" v-bind:title="sidebarCollapsed ? 'About Us' : ''">
+                    v-on:click="navigateTo('about')" v-bind:title="sidebarCollapsed ? 'About Us' : ''">
                     <i class="fas fa-info-circle"></i> <span class="sidebar-text">About us</span>
                 </button>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'review'}"
-                    v-on:click="currentPage = 'review'" v-bind:title="sidebarCollapsed ? 'Review' : ''">
+                    v-on:click="navigateTo('review')" v-bind:title="sidebarCollapsed ? 'Review' : ''">
                     <i class="fas fa-star"></i> <span class="sidebar-text">Reviews</span>
                 </button>
             </div>
