@@ -364,7 +364,7 @@ var app = new Vue({
                     subject: lesson.subject,
                     location: lesson.location,
                     price: lesson.price,
-                    icon: lesson.icon,
+                    image: lesson.image,
                     quantity: 1
                 });
             }

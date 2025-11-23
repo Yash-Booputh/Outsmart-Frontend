@@ -540,9 +540,10 @@
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
-                                            <div class="lesson-icon bg-gradient-primary text-white rounded-3 p-3">
-                                                <i v-bind:class="item.icon + ' fa-2x'"></i>
-                                            </div>
+                                            <img v-bind:src="imageBaseURL + '/' + item.image"
+                                                 v-bind:alt="item.subject"
+                                                 class="rounded-3"
+                                                 style="width: 60px; height: 60px; object-fit: cover;">
                                         </div>
                                         <div class="col">
                                             <h5 class="mb-1">{{ item.subject }}</h5>
