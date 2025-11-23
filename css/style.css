@@ -134,7 +134,11 @@
 }
 
 .testimonial-stars i {
-    color: #fbbf24;
+    color: #171c2c;
+}
+
+[data-theme="dark"] .testimonial-stars i {
+    color: #ffffff;
 }
 
 /* Available Lessons Badge */
