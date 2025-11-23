@@ -10,6 +10,12 @@ var app = new Vue({
         sortAttribute: 'subject',
         sortOrder: 'ascending',
         searchQuery: '',
+        filterCategories: [],
+        filterPriceMax: 2500,
+        filterLocations: [],
+        filterSeatsOptions: [],
+        filterMinSeats: 0,
+        filterCollapsed: true,
         checkoutInfo: {
             name: '',
             phone: '',
@@ -69,32 +75,91 @@ var app = new Vue({
         showSuggestions: false,
         searchCompleted: false
     },
+    watch: {
+        currentPage: function () {
+            window.scrollTo(0, 0);
+        }
+    },
     computed: {
         sortedLessons: function () {
             let lessonsArray = this.lessons.slice();
+            let self = this;
 
-            // Don't filter here anymore - backend handles search
-            // Just sort the lessons
-            let attribute = this.sortAttribute;
-            let order = this.sortOrder;
+            // Apply filters
+            if (this.filterCategories.length > 0) {
+                lessonsArray = lessonsArray.filter(function(lesson) {
+                    return self.filterCategories.indexOf(lesson.subject) !== -1;
+                });
+            }
 
-            lessonsArray.sort(function (a, b) {
-                let valueA = a[attribute];
-                let valueB = b[attribute];
+            // Price filter - show lessons up to max price
+            lessonsArray = lessonsArray.filter(function(lesson) {
+                return lesson.price <= self.filterPriceMax;
+            });
 
-                if (typeof valueA === 'string') {
-                    valueA = valueA.toLowerCase();
-                    valueB = valueB.toLowerCase();
+            if (this.filterLocations.length > 0) {
+                lessonsArray = lessonsArray.filter(function(lesson) {
+                    return self.filterLocations.indexOf(lesson.location) !== -1;
+                });
+            }
+
+            // Seats filter - show lessons with at least filterMinSeats
+            if (this.filterMinSeats > 0) {
+                lessonsArray = lessonsArray.filter(function(lesson) {
+                    return lesson.spaces >= self.filterMinSeats;
+                });
+            }
+
+            // Sort lessons
+            lessonsArray.sort(function(a, b) {
+                let aValue = a[self.sortAttribute];
+                let bValue = b[self.sortAttribute];
+
+                // Handle string comparison
+                if (typeof aValue === 'string') {
+                    aValue = aValue.toLowerCase();
+                    bValue = bValue.toLowerCase();
                 }
 
-                if (order === 'ascending') {
-                    return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0);
-                } else {
-                    return valueA < valueB ? 1 : (valueA > valueB ? -1 : 0);
+                let comparison = 0;
+                if (aValue < bValue) {
+                    comparison = -1;
+                } else if (aValue > bValue) {
+                    comparison = 1;
                 }
+
+                return self.sortOrder === 'ascending' ? comparison : -comparison;
             });
 
             return lessonsArray;
+        },
+        uniqueLocations: function () {
+            let locations = [];
+            for (let i = 0; i < this.lessons.length; i++) {
+                if (locations.indexOf(this.lessons[i].location) === -1) {
+                    locations.push(this.lessons[i].location);
+                }
+            }
+            return locations.sort();
+        },
+        uniqueCategories: function () {
+            let categories = [];
+            for (let i = 0; i < this.lessons.length; i++) {
+                if (categories.indexOf(this.lessons[i].subject) === -1) {
+                    categories.push(this.lessons[i].subject);
+                }
+            }
+            return categories.sort();
+        },
+        maxPrice: function () {
+            if (this.lessons.length === 0) return 2500;
+            let max = 0;
+            for (let i = 0; i < this.lessons.length; i++) {
+                if (this.lessons[i].price > max) {
+                    max = this.lessons[i].price;
+                }
+            }
+            return max;
         },
         cartCount: function () {
             let total = 0;
@@ -176,6 +241,13 @@ var app = new Vue({
         }
     },
     methods: {
+        resetFilters: function () {
+            this.filterCategories = [];
+            this.filterPriceMax = 2500;
+            this.filterLocations = [];
+            this.filterSeatsOptions = [];
+            this.filterMinSeats = 0;
+        },
         getImageUrl: function (imageName) {
             // Returns the full URL for a lesson image from the backend
             if (!imageName) {

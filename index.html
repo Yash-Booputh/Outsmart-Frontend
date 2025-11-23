@@ -268,29 +268,81 @@
             <div v-if="currentPage === 'lessons'" class="page">
                 <h2 class="mb-4">All Lessons</h2>
 
-                <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Search</label>
-                                <input type="text" class="form-control" placeholder="Search lessons..."
-                                    v-model="searchQuery" v-on:input="searchLessons">
+                <!-- Filter Box -->
+                <div class="filter-container mb-4" v-bind:class="{'collapsed': filterCollapsed}">
+                    <div class="filter-header">
+                        <div class="filter-title-wrapper" v-on:click="filterCollapsed = !filterCollapsed">
+                            <i class="fas fa-sliders-h filter-icon"></i>
+                            <h4 class="filter-title">Filters</h4>
+                            <button class="filter-toggle-btn">
+                                <i v-bind:class="filterCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up'"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-outline-secondary btn-sm" v-on:click="resetFilters" v-if="!filterCollapsed">
+                            <i class="fas fa-undo me-1"></i> Reset
+                        </button>
+                    </div>
+                    <div class="filter-box">
+                        <!-- Category Filter -->
+                        <div class="filter-item">
+                            <label class="filter-label">Category</label>
+                            <div class="filter-checkbox-group">
+                                <label class="filter-checkbox" v-for="category in uniqueCategories" v-bind:key="category">
+                                    <input type="checkbox" v-bind:value="category" v-model="filterCategories">
+                                    <span class="checkmark"></span>
+                                    <span class="filter-checkbox-label">{{ category }}</span>
+                                </label>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Sort by</label>
-                                <select class="form-select" v-model="sortAttribute">
+                        </div>
+
+                        <!-- Location Filter -->
+                        <div class="filter-item">
+                            <label class="filter-label">Location</label>
+                            <div class="filter-checkbox-group">
+                                <label class="filter-checkbox" v-for="location in uniqueLocations" v-bind:key="location">
+                                    <input type="checkbox" v-bind:value="location" v-model="filterLocations">
+                                    <span class="checkmark"></span>
+                                    <span class="filter-checkbox-label">{{ location }}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Number of Seats Filter -->
+                        <div class="filter-item">
+                            <label class="filter-label">Number of Seats</label>
+                            <div class="filter-range-container">
+                                <input type="range" class="form-range"
+                                       min="0"
+                                       max="20"
+                                       v-model="filterMinSeats">
+                                <span class="filter-range-value">{{ filterMinSeats }}+</span>
+                            </div>
+                        </div>
+
+                        <!-- Price Range Filter -->
+                        <div class="filter-item">
+                            <label class="filter-label">Price Range</label>
+                            <div class="filter-range-container">
+                                <input type="range" class="form-range"
+                                       v-bind:min="0"
+                                       v-bind:max="maxPrice"
+                                       v-model="filterPriceMax">
+                                <span class="filter-range-value">Rs {{ filterPriceMax }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Sort By -->
+                        <div class="filter-item">
+                            <label class="filter-label">Sort By</label>
+                            <div class="filter-sort-container">
+                                <select class="form-select form-select-sm" v-model="sortAttribute">
                                     <option value="subject">Subject</option>
                                     <option value="location">Location</option>
                                     <option value="price">Price</option>
-                                    <option value="spaces">Availability</option>
                                 </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Order</label>
-                                <select class="form-select" v-model="sortOrder">
-                                    <option value="ascending">Ascending</option>
-                                    <option value="descending">Descending</option>
-                                </select>
+                                <button class="sort-order-btn" v-on:click="sortOrder = sortOrder === 'ascending' ? 'descending' : 'ascending'">
+                                    <i v-bind:class="sortOrder === 'ascending' ? 'fas fa-sort-amount-up' : 'fas fa-sort-amount-down'"></i>
+                                </button>
                             </div>
                         </div>
                     </div>

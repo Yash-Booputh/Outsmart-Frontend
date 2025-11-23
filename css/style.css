@@ -663,6 +663,414 @@ body {
     margin-top: 60px;
 }
 
+/* Filter Box */
+.filter-container {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-color);
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-container.collapsed .filter-header {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.filter-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.filter-title-wrapper:hover .filter-title,
+.filter-title-wrapper:hover .filter-icon {
+    color: #111828;
+}
+
+[data-theme="dark"] .filter-title-wrapper:hover .filter-title,
+[data-theme="dark"] .filter-title-wrapper:hover .filter-icon {
+    color: white;
+}
+
+.filter-icon {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    transition: color 0.2s ease;
+}
+
+.filter-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    transition: color 0.2s ease;
+}
+
+.filter-toggle-btn {
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.filter-toggle-btn:hover {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.filter-header .btn {
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.filter-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+    opacity: 1;
+}
+
+.filter-container.collapsed .filter-box {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 160px;
+    flex: 1;
+}
+
+.filter-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Checkbox group */
+.filter-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.filter-checkbox-group::-webkit-scrollbar {
+    width: 4px;
+}
+
+.filter-checkbox-group::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 2px;
+}
+
+.filter-checkbox-group::-webkit-scrollbar-thumb {
+    background: var(--text-secondary);
+    border-radius: 2px;
+}
+
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+    position: relative;
+    padding-left: 24px;
+}
+
+.filter-checkbox:hover {
+    color: var(--text-primary);
+}
+
+.filter-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.filter-checkbox .checkmark {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 16px;
+    width: 16px;
+    background-color: var(--main-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.filter-checkbox:hover .checkmark {
+    border-color: #111828;
+}
+
+.filter-checkbox input:checked ~ .checkmark {
+    background-color: #111828;
+    border-color: #111828;
+}
+
+.filter-checkbox .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.filter-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.filter-checkbox-label {
+    line-height: 1.2;
+}
+
+/* Sort container */
+.filter-sort-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.filter-sort-container select {
+    flex: 1;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    background-color: var(--main-bg);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.filter-sort-container select:focus {
+    border-color: #111828;
+    box-shadow: 0 0 0 3px rgba(17, 24, 40, 0.15);
+    outline: none;
+}
+
+.sort-order-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--main-bg);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sort-order-btn:hover {
+    border-color: #111828;
+    color: #111828;
+    background-color: rgba(17, 24, 40, 0.1);
+}
+
+[data-theme="dark"] .filter-sort-container select {
+    background-color: var(--main-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .sort-order-btn {
+    background-color: var(--main-bg);
+    border-color: var(--border-color);
+}
+
+/* Range slider container */
+.filter-range-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-range-container .form-range {
+    width: 100%;
+    accent-color: #111828;
+}
+
+/* Custom range slider thumb styling */
+.filter-range-container .form-range::-webkit-slider-thumb {
+    background-color: #111828;
+}
+
+.filter-range-container .form-range::-moz-range-thumb {
+    background-color: #111828;
+}
+
+.filter-range-container .form-range::-ms-thumb {
+    background-color: #111828;
+}
+
+.filter-range-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #111828;
+}
+
+[data-theme="dark"] .filter-range-container .form-range {
+    accent-color: white;
+}
+
+[data-theme="dark"] .filter-range-container .form-range::-webkit-slider-thumb {
+    background-color: white;
+}
+
+[data-theme="dark"] .filter-range-container .form-range::-moz-range-thumb {
+    background-color: white;
+}
+
+[data-theme="dark"] .filter-range-container .form-range::-ms-thumb {
+    background-color: white;
+}
+
+[data-theme="dark"] .filter-range-value {
+    color: white;
+}
+
+/* Dark mode adjustments for filter */
+[data-theme="dark"] .filter-container {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .filter-checkbox .checkmark {
+    background-color: var(--main-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .filter-checkbox:hover .checkmark {
+    border-color: white;
+}
+
+[data-theme="dark"] .filter-checkbox input:checked ~ .checkmark {
+    background-color: white;
+    border-color: white;
+}
+
+[data-theme="dark"] .filter-checkbox input:checked ~ .checkmark:after {
+    border-color: #111828;
+}
+
+[data-theme="dark"] .filter-sort-container select:focus {
+    border-color: var(--info);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+[data-theme="dark"] .sort-order-btn:hover {
+    border-color: var(--info);
+    color: var(--info);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Responsive filter */
+@media (max-width: 992px) {
+    .filter-container {
+        padding: 20px;
+    }
+
+    .filter-box {
+        gap: 24px;
+    }
+
+    .filter-item {
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-box {
+        gap: 20px;
+    }
+
+    .filter-item {
+        min-width: 45%;
+    }
+
+    .filter-checkbox-group {
+        max-height: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    .filter-container {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .filter-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .filter-header .btn {
+        width: 100%;
+    }
+
+    .filter-box {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .filter-item {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .filter-checkbox-group {
+        max-height: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .filter-checkbox {
+        flex: 0 0 auto;
+    }
+}
+
 /* Footer */
 .app-footer {
     margin-top: 80px;
@@ -1938,6 +2346,33 @@ textarea.form-control::placeholder {
 [data-theme="dark"] .form-check-input:checked {
     background-color: var(--primary);
     border-color: var(--primary);
+}
+
+/* Filter Checkboxes */
+.filter-checkboxes {
+    max-height: 120px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.filter-checkboxes .form-check {
+    margin-bottom: 0.2rem;
+}
+
+.filter-checkboxes .form-check-label {
+    font-size: 0.75rem;
+}
+
+.price-slider-container {
+    padding-top: 5px;
+}
+
+.price-slider-container .form-range {
+    width: 100%;
+}
+
+.price-slider-container span {
+    font-size: 0.75rem;
 }
 
 /* Landing Page Styles */
