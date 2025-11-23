@@ -266,7 +266,11 @@
 
             <!-- All Lessons Page -->
             <div v-if="currentPage === 'lessons'" class="page">
-                <h2 class="mb-4">All Lessons</h2>
+                <h2 class="mb-4">All Lessons
+                    <span class="badge rounded-pill available-badge ms-2" style="top: -2px;">
+                        <i class="fas fa-book-open me-1"></i> {{ sortedLessons.length }} available
+                    </span>
+                </h2>
 
                 <!-- Filter Box -->
                 <div class="filter-container mb-4" v-bind:class="{'collapsed': filterCollapsed}">
