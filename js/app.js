@@ -1,6 +1,3 @@
-// OutSmart Vue.js Application
-// Main app for after-school lessons booking system
-
 var app = new Vue({
     el: '#app',
     data: {
@@ -503,7 +500,7 @@ var app = new Vue({
                 });
         },
 
-        // Updates lesson spaces in backend (PUT) - for testing
+        // Updates lesson spaces in backend (PUT) 
         updateLessonSpaces: function (lessonId, newSpaces) {
             fetch(this.apiURL + '/lessons/' + lessonId, {
                 method: 'PUT',
