@@ -299,6 +299,7 @@ var app = new Vue({
                 this.searchSuggestions = [];
                 this.searchCompleted = false;
                 this.searchResults = null;
+                this.showSuggestions = false;
                 return;
             }
 
