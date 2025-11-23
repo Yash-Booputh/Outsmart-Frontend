@@ -12,8 +12,10 @@
 
 <body>
     <div id="app" v-cloak>
-        <!-- Sidebar -->
+
+        <!-- ==================== SIDEBAR NAVIGATION ==================== -->
         <div class="sidebar" v-bind:class="{'collapsed': sidebarCollapsed}">
+            <!-- Logo -->
             <div class="logo" v-on:click="navigateTo('home')" style="cursor: pointer;">
                 <img src="assets/images/mascot_logo.png" alt="OutSmart Mascot" class="logo-mascot">
                 <div class="logo-text">
@@ -22,6 +24,7 @@
                 </div>
             </div>
 
+            <!-- General Navigation -->
             <div class="sidebar-section">
                 <p class="sidebar-label">General</p>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'home'}"
@@ -42,6 +45,7 @@
                 </button>
             </div>
 
+            <!-- Info Navigation -->
             <div class="sidebar-section">
                 <p class="sidebar-label">Info</p>
                 <button v-bind:class="{'sidebar-item': true, 'active': currentPage === 'about'}"
@@ -54,15 +58,18 @@
                 </button>
             </div>
 
+            <!-- Sidebar Collapse Button -->
             <button class="sidebar-collapse-btn" v-on:click="toggleSidebar">
                 <i v-bind:class="sidebarCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"></i>
             </button>
         </div>
 
-        <!-- Main Content -->
+        <!-- ==================== MAIN CONTENT AREA ==================== -->
         <div class="main-content" v-bind:class="{'sidebar-collapsed': sidebarCollapsed}">
-            <!-- Top Action Bar -->
+
+            <!-- ==================== TOP ACTION BAR (Search & Theme Toggle) ==================== -->
             <div class="top-action-bar">
+                <!-- Search Box with Suggestions -->
                 <div class="header-search-container">
                     <div class="header-search-box">
                         <i class="fas fa-search header-search-icon"></i>
@@ -74,6 +81,7 @@
                         <button class="header-search-clear" v-if="searchQuery.length > 0" v-on:click="clearSearch">
                             <i class="fas fa-times"></i>
                         </button>
+                        <!-- Search Suggestions Dropdown -->
                         <div class="search-suggestions" v-if="showSuggestions && searchQuery.length > 0 && searchCompleted">
                             <div class="search-suggestion-item"
                                  v-for="suggestion in searchSuggestions"
@@ -94,13 +102,15 @@
                         </div>
                     </div>
                 </div>
+                <!-- Theme Toggle Button -->
                 <button class="theme-toggle" v-on:click="toggleTheme">
                     <i v-bind:class="isDarkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
                 </button>
             </div>
 
-            <!-- Home Page -->
+            <!-- ==================== HOME PAGE ==================== -->
             <div v-if="currentPage === 'home'" class="page">
+
                 <!-- Hero Section -->
                 <div class="hero-section">
                     <div class="row align-items-center">
@@ -123,6 +133,7 @@
                                 </button>
                             </div>
                         </div>
+                        <!-- Slideshow -->
                         <div class="col-lg-6">
                             <div class="slideshow-container">
                                 <div class="slideshow-wrapper">
@@ -204,6 +215,7 @@
                     </div>
                 </div>
 
+                <!-- Popular Lessons Preview -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="d-flex align-items-center">
                         <h2 class="mb-0 me-3">Popular Lessons</h2>
@@ -235,7 +247,7 @@
                     </div>
                 </div>
 
-                <!-- Actual Lessons -->
+                <!-- Lesson Cards (first 6) -->
                 <div class="row g-4" v-else>
                     <div class="col-lg-4 col-md-6" v-for="lesson in lessons.slice(0, 6)" v-bind:key="lesson.id">
                         <div class="card lesson-card border-0 shadow-sm h-100">
@@ -271,7 +283,7 @@
                 </div>
             </div>
 
-            <!-- All Lessons Page -->
+            <!-- ==================== ALL LESSONS PAGE ==================== -->
             <div v-if="currentPage === 'lessons'" class="page">
                 <h2 class="mb-4">All Lessons
                     <span class="badge rounded-pill available-badge ms-2" style="top: -2px;">
@@ -378,7 +390,7 @@
                     </div>
                 </div>
 
-                <!-- Actual Lessons -->
+                <!-- Lesson Cards (all filtered/sorted) - uses v-for -->
                 <div class="row g-4" v-else>
                     <div class="col-lg-4 col-md-6" v-for="lesson in sortedLessons" v-bind:key="lesson.id">
                         <div class="card lesson-card border-0 shadow-sm h-100 clickable-card" v-on:click="viewLesson(lesson)">
@@ -404,6 +416,7 @@
                                     <span class="fw-bold text-primary">Rs {{ lesson.price }}/session</span>
                                     <span class="badge">{{ lesson.spaces }} spaces</span>
                                 </div>
+                                <!-- Add to Cart Button -->
                                 <button class="btn btn-primary w-100"
                                         v-on:click.stop="addToCart(lesson)"
                                         v-bind:disabled="lesson.spaces === 0">
@@ -415,13 +428,14 @@
                     </div>
                 </div>
 
+                <!-- No Results Message -->
                 <div v-if="!isLoading && sortedLessons.length === 0" class="text-center py-5">
                     <i class="fas fa-search fa-4x text-muted mb-3"></i>
                     <p class="text-muted fs-5">No lessons found matching your search.</p>
                 </div>
             </div>
 
-            <!-- Lesson Detail Page -->
+            <!-- ==================== LESSON DETAIL PAGE ==================== -->
             <div v-if="currentPage === 'lessonDetail'" class="page">
                 <h2 class="mb-4">More Details</h2>
 
@@ -433,17 +447,14 @@
                 </div>
 
                 <div class="row" v-if="selectedLesson">
-                    <!-- Left Column - Images -->
+                    <!-- Left Column - Image Gallery -->
                     <div class="col-lg-6 mb-4">
                         <div class="lesson-gallery">
-                            <!-- Main Image -->
                             <div class="main-image-container mb-3">
                                 <img v-bind:src="lessonImages[currentImageIndex]"
                                      v-bind:alt="selectedLesson.subject"
                                      class="main-lesson-image rounded-3 shadow-sm">
                             </div>
-
-                            <!-- Thumbnail Navigation -->
                             <div class="thumbnail-container d-flex gap-2">
                                 <div v-for="(image, index) in lessonImages"
                                      v-bind:key="index"
@@ -458,10 +469,9 @@
                         </div>
                     </div>
 
-                    <!-- Right Column - Details -->
+                    <!-- Right Column - Lesson Details -->
                     <div class="col-lg-6">
                         <div class="lesson-details">
-                            <!-- Title and Rating -->
                             <h1 class="lesson-title mb-2">{{ selectedLesson.subject }}</h1>
                             <div class="lesson-rating mb-3">
                                 <i class="fas fa-star text-warning"></i>
@@ -472,7 +482,6 @@
                                 <span class="ms-2 text-muted">(4.5 rating)</span>
                             </div>
 
-                            <!-- Location -->
                             <p class="lesson-location mb-3">
                                 <i class="fas fa-map-marker-alt text-primary me-2"></i>
                                 {{ selectedLesson.location }}
@@ -490,7 +499,7 @@
                                 </span>
                             </div>
 
-                            <!-- About This Activity -->
+                            <!-- About This Lesson -->
                             <div class="card border-0 bg-light mb-4">
                                 <div class="card-body">
                                     <h5 class="card-title mb-3">
@@ -529,12 +538,13 @@
                 </div>
             </div>
 
-            <!-- Cart Page -->
+            <!-- ==================== SHOPPING CART PAGE ==================== -->
             <div v-if="currentPage === 'cart'" class="page">
                 <h2 class="mb-4">Shopping Cart</h2>
 
                 <div v-if="cart.length > 0">
                     <div class="row">
+                        <!-- Cart Items List -->
                         <div class="col-lg-8 mb-4">
                             <div class="card border-0 shadow-sm mb-3" v-for="(item, index) in cart" v-bind:key="index">
                                 <div class="card-body">
@@ -552,10 +562,11 @@
                                             </p>
                                             <p class="mb-0">
                                                 <span class="fw-bold text-primary">Rs {{ item.price }}</span>
-                                                <span class="text-muted"> × {{ item.quantity }} = </span>
+                                                <span class="text-muted"> x {{ item.quantity }} = </span>
                                                 <span class="fw-bold">Rs {{ item.price * item.quantity }}</span>
                                             </p>
                                         </div>
+                                        <!-- Quantity Controls -->
                                         <div class="col-auto">
                                             <div class="d-flex align-items-center gap-2">
                                                 <div class="btn-group">
@@ -581,11 +592,13 @@
                             </div>
                         </div>
 
+                        <!-- Checkout Form -->
                         <div class="col-lg-4">
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
                                     <h4 class="mb-4">Checkout</h4>
 
+                                    <!-- Name Input with Validation -->
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold">Name</label>
                                         <input type="text" class="form-control"
@@ -596,6 +609,7 @@
                                         </div>
                                     </div>
 
+                                    <!-- Phone Input with Validation -->
                                     <div class="mb-3">
                                         <label class="form-label fw-semibold">Phone</label>
                                         <input type="text" class="form-control"
@@ -606,12 +620,14 @@
                                         </div>
                                     </div>
 
+                                    <!-- Email Input (Optional) -->
                                     <div class="mb-4">
                                         <label class="form-label fw-semibold">Email <span class="text-muted fw-normal">(optional)</span></label>
                                         <input type="email" class="form-control"
                                             v-model="checkoutInfo.email" placeholder="Enter your email">
                                     </div>
 
+                                    <!-- Order Total -->
                                     <div class="border-top pt-3 mb-3">
                                         <div class="d-flex justify-content-between mb-2">
                                             <span class="text-muted">Subtotal:</span>
@@ -623,6 +639,7 @@
                                         </div>
                                     </div>
 
+                                    <!-- Place Order Button -->
                                     <button class="btn btn-primary w-100 btn-lg" v-on:click="checkout"
                                         v-bind:disabled="!canCheckout">
                                         <i class="fas fa-check me-2"></i> Place Order
@@ -633,6 +650,7 @@
                     </div>
                 </div>
 
+                <!-- Empty Cart Message -->
                 <div v-else class="text-center py-5">
                     <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
                     <p class="text-muted fs-5 mb-3">Your cart is empty.</p>
@@ -642,12 +660,13 @@
                 </div>
             </div>
 
-            <!-- About Us Page -->
+            <!-- ==================== ABOUT US PAGE ==================== -->
             <div v-if="currentPage === 'about'" class="page">
                 <h2 class="mb-4">About Us</h2>
 
                 <div class="row">
                     <div class="col-lg-8">
+                        <!-- Our Mission -->
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-body p-4">
                                 <h5 class="mb-3"><i class="fas fa-graduation-cap me-2"></i>Our Mission</h5>
@@ -655,6 +674,7 @@
                             </div>
                         </div>
 
+                        <!-- Our Story -->
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-body p-4">
                                 <h5 class="mb-3"><i class="fas fa-history me-2"></i>Our Story</h5>
@@ -662,6 +682,7 @@
                             </div>
                         </div>
 
+                        <!-- Our Team -->
                         <div class="card border-0 shadow-sm">
                             <div class="card-body p-4">
                                 <h5 class="mb-3"><i class="fas fa-users me-2"></i>Our Team</h5>
@@ -671,6 +692,7 @@
                     </div>
 
                     <div class="col-lg-4">
+                        <!-- Quick Facts -->
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-body p-4">
                                 <h5 class="mb-3">Quick Facts</h5>
@@ -695,6 +717,7 @@
                             </div>
                         </div>
 
+                        <!-- Contact Us -->
                         <div class="card border-0 shadow-sm">
                             <div class="card-body p-4">
                                 <h5 class="mb-3">Contact Us</h5>
@@ -716,10 +739,11 @@
                 </div>
             </div>
 
-            <!-- Reviews Page -->
+            <!-- ==================== REVIEWS PAGE ==================== -->
             <div v-if="currentPage === 'review'" class="page">
                 <h2 class="text-center mb-4 fw-bold">What Parents Say</h2>
                 <div class="row g-4">
+                    <!-- Testimonial Cards -->
                     <div class="col-md-4">
                         <div class="card testimonial-card border-0 shadow-sm h-100">
                             <div class="card-body p-4">
@@ -831,8 +855,9 @@
                 </div>
             </div>
 
-            <!-- Footer -->
+            <!-- ==================== FOOTER ==================== -->
             <footer class="app-footer">
+                <!-- Left - Contact Info -->
                 <div class="footer-left">
                     <div class="footer-center-inner">
                          <a href="tel:+23059082464" class="footer-contact-item">
@@ -849,6 +874,7 @@
                         </a>
                     </div>
                 </div>
+                <!-- Center - Branding & Links -->
                 <div class="footer-center">
                     <div class="footer-brand">
                         <img src="assets/images/mascot_logo.png" alt="OutSmart Mascot" class="footer-mascot">
@@ -868,8 +894,9 @@
                         <span>|</span>
                         <a href="#" v-on:click.prevent="currentPage = 'review'">Reviews</a>
                     </div>
-                    <p class="footer-copyright">©2025 OUTSMART. All rights reserved.</p>
+                    <p class="footer-copyright">&copy;2025 OUTSMART. All rights reserved.</p>
                 </div>
+                <!-- Right - Social Icons -->
                 <div class="footer-right">
                     <div class="footer-icons">
                         <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
@@ -882,7 +909,7 @@
 
         </div>
 
-        <!-- Order Confirmation Modal -->
+        <!-- ==================== ORDER CONFIRMATION MODAL ==================== -->
         <div v-if="orderConfirmed" v-cloak class="modal-backdrop-custom" v-on:click="orderConfirmed = false">
             <div class="modal-dialog modal-dialog-centered" v-on:click.stop>
                 <div class="modal-content border-0 shadow-lg" style="background: white; border-radius: 16px;">

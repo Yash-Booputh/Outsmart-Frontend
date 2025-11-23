@@ -1,64 +1,57 @@
+// OutSmart Vue.js Application
+// Main app for after-school lessons booking system
+
 var app = new Vue({
     el: '#app',
     data: {
+        // Page navigation
         currentPage: 'home',
         orderConfirmed: false,
         isDarkMode: false,
+
+        // Lessons data
         lessons: [],
         isLoading: true,
+
+        // Shopping cart
         cart: [],
+
+        // Sorting and filtering
         sortAttribute: 'subject',
         sortOrder: 'ascending',
         searchQuery: '',
         filterCategories: [],
         filterPriceMax: 2500,
         filterLocations: [],
-        filterSeatsOptions: [],
         filterMinSeats: 0,
         filterCollapsed: true,
+
+        // Checkout form
         checkoutInfo: {
             name: '',
             phone: '',
             email: ''
         },
-        userProfile: {
-            name: '',
-            email: '',
-            phone: '',
-            studentId: '',
-            address: ''
-        },
-        userProfileBackup: {},
-        profileEditMode: false,
-        passwordChange: {
-            current: '',
-            new: '',
-            confirm: ''
-        },
-        settings: {
-            emailNotifications: true,
-            pushNotifications: false,
-            marketingEmails: false,
-            profileVisibility: true,
-            showOnlineStatus: true,
-            language: 'en',
-            timezone: 'GMT'
-        },
+
+        // Slideshow
         currentSlide: 0,
         slideshowInterval: null,
+
+        // Sidebar
         sidebarCollapsed: false,
 
-        // Lesson detail page data
+        // Lesson detail page
         selectedLesson: null,
         previousPage: 'home',
         currentImageIndex: 0,
 
+        // API URL for backend
         apiURL: 'https://outsmart-backend-osm4.onrender.com/api',
 
-        // Base URL for images (static files from backend)
+        // Base URL for images from backend
         imageBaseURL: 'https://outsmart-backend-osm4.onrender.com/images',
 
-        // Default includes for lessons without includes array
+        // Default includes for lesson detail page
         defaultIncludes: [
             'Professional instruction',
             'All necessary equipment',
@@ -71,37 +64,40 @@ var app = new Vue({
         showSuggestions: false,
         searchCompleted: false,
 
-        // Search results (separate from lessons to not affect popular lessons)
+        // Search results (separate from lessons)
         searchResults: null
     },
     computed: {
-        // Lessons to display on All Lessons page (uses search results if available)
+        // Returns lessons to display (search results or all lessons)
         displayLessons: function () {
             return this.searchResults !== null ? this.searchResults : this.lessons;
         },
+
+        // Returns filtered and sorted lessons for display
         sortedLessons: function () {
             let lessonsArray = this.displayLessons.slice();
             let self = this;
 
-            // Apply filters
+            // Filter by category
             if (this.filterCategories.length > 0) {
                 lessonsArray = lessonsArray.filter(function(lesson) {
                     return self.filterCategories.indexOf(lesson.subject) !== -1;
                 });
             }
 
-            // Price filter - show lessons up to max price
+            // Filter by max price
             lessonsArray = lessonsArray.filter(function(lesson) {
                 return lesson.price <= self.filterPriceMax;
             });
 
+            // Filter by location
             if (this.filterLocations.length > 0) {
                 lessonsArray = lessonsArray.filter(function(lesson) {
                     return self.filterLocations.indexOf(lesson.location) !== -1;
                 });
             }
 
-            // Seats filter - show lessons with at least filterMinSeats
+            // Filter by minimum seats
             if (this.filterMinSeats > 0) {
                 lessonsArray = lessonsArray.filter(function(lesson) {
                     return lesson.spaces >= self.filterMinSeats;
@@ -113,7 +109,6 @@ var app = new Vue({
                 let aValue = a[self.sortAttribute];
                 let bValue = b[self.sortAttribute];
 
-                // Handle string comparison
                 if (typeof aValue === 'string') {
                     aValue = aValue.toLowerCase();
                     bValue = bValue.toLowerCase();
@@ -131,6 +126,8 @@ var app = new Vue({
 
             return lessonsArray;
         },
+
+        // Gets unique locations from lessons for filter
         uniqueLocations: function () {
             let locations = [];
             for (let i = 0; i < this.lessons.length; i++) {
@@ -140,6 +137,8 @@ var app = new Vue({
             }
             return locations.sort();
         },
+
+        // Gets unique categories from lessons for filter
         uniqueCategories: function () {
             let categories = [];
             for (let i = 0; i < this.lessons.length; i++) {
@@ -149,6 +148,8 @@ var app = new Vue({
             }
             return categories.sort();
         },
+
+        // Gets maximum price from lessons for price slider
         maxPrice: function () {
             if (this.lessons.length === 0) return 2500;
             let max = 0;
@@ -159,6 +160,8 @@ var app = new Vue({
             }
             return max;
         },
+
+        // Returns total number of items in cart
         cartCount: function () {
             let total = 0;
             for (let i = 0; i < this.cart.length; i++) {
@@ -166,6 +169,8 @@ var app = new Vue({
             }
             return total;
         },
+
+        // Returns total price of cart items
         cartTotal: function () {
             let total = 0;
             for (let i = 0; i < this.cart.length; i++) {
@@ -173,12 +178,18 @@ var app = new Vue({
             }
             return total;
         },
+
+        // Validates name contains only letters
         isValidName: function () {
             return /^[A-Za-z\s]+$/.test(this.checkoutInfo.name);
         },
+
+        // Validates phone contains only numbers
         isValidPhone: function () {
             return /^[0-9]+$/.test(this.checkoutInfo.phone);
         },
+
+        // Checks if checkout form is valid
         canCheckout: function () {
             return this.checkoutInfo.name !== '' &&
                 this.checkoutInfo.phone !== '' &&
@@ -186,68 +197,50 @@ var app = new Vue({
                 this.isValidPhone &&
                 this.cart.length > 0;
         },
-        isValidProfileName: function () {
-            return /^[A-Za-z\s]+$/.test(this.userProfile.name);
-        },
-        isValidProfilePhone: function () {
-            return /^[0-9]+$/.test(this.userProfile.phone);
-        },
-        canSaveProfile: function () {
-            if (!this.userProfile.name || !this.userProfile.email) {
-                return false;
-            }
-            if (this.userProfile.name && !this.isValidProfileName) {
-                return false;
-            }
-            if (this.userProfile.phone && !this.isValidProfilePhone) {
-                return false;
-            }
-            return true;
-        },
-        canChangePassword: function () {
-            return this.passwordChange.current !== '' &&
-                this.passwordChange.new !== '' &&
-                this.passwordChange.confirm !== '' &&
-                this.passwordChange.new === this.passwordChange.confirm;
-        },
+
+        // Returns images for lesson detail page
         lessonImages: function () {
             if (!this.selectedLesson) return [];
-
-            // Return the lesson's main image from backend
             var imageName = this.selectedLesson.image || 'default.jpg';
             var mainImage = this.imageBaseURL + '/' + imageName;
             return [mainImage];
         },
+
+        // Returns description for lesson detail page
         lessonDescription: function () {
             if (!this.selectedLesson) return '';
             return this.selectedLesson.description || 'Join us for an engaging and educational experience!';
         }
     },
     methods: {
+        // Navigates to specified page
         navigateTo: function (page) {
-            // Collapse filter when leaving lessons page
             if (page !== 'lessons') {
                 this.filterCollapsed = true;
             }
             this.currentPage = page;
             window.scrollTo(0, 0);
         },
+
+        // Resets all filters to default values
         resetFilters: function () {
             this.filterCategories = [];
             this.filterPriceMax = 2500;
             this.filterLocations = [];
-            this.filterSeatsOptions = [];
             this.filterMinSeats = 0;
             this.sortAttribute = 'subject';
             this.sortOrder = 'ascending';
         },
+
+        // Returns full URL for lesson image
         getImageUrl: function (imageName) {
-            // Returns the full URL for a lesson image from the backend
             if (!imageName) {
                 return this.imageBaseURL + '/default.jpg';
             }
             return this.imageBaseURL + '/' + imageName;
         },
+
+        // Toggles dark/light theme
         toggleTheme: function () {
             this.isDarkMode = !this.isDarkMode;
             if (this.isDarkMode) {
@@ -258,10 +251,14 @@ var app = new Vue({
                 localStorage.setItem('theme', 'light');
             }
         },
+
+        // Toggles sidebar collapsed state
         toggleSidebar: function () {
             this.sidebarCollapsed = !this.sidebarCollapsed;
             localStorage.setItem('sidebarCollapsed', this.sidebarCollapsed);
         },
+
+        // Handles window resize for responsive sidebar
         handleResize: function () {
             if (window.innerWidth <= 992) {
                 this.sidebarCollapsed = true;
@@ -270,31 +267,9 @@ var app = new Vue({
                 this.sidebarCollapsed = saved === 'true';
             }
         },
-        searchLessons: function () {
-            // If search query is empty, clear search results
-            if (!this.searchQuery || this.searchQuery.trim() === '') {
-                this.searchResults = null;
-                return;
-            }
 
-            // Call backend search API (3% - Frontend fetch)
-            fetch(this.apiURL + '/search?q=' + encodeURIComponent(this.searchQuery))
-                .then(function (response) {
-                    if (!response.ok) {
-                        throw new Error('Search failed');
-                    }
-                    return response.json();
-                })
-                .then(function (data) {
-                    this.searchResults = data;
-                }.bind(this))
-                .catch(function (error) {
-                    console.error('Error searching lessons:', error);
-                    alert('Search failed. Please try again.');
-                });
-        },
+        // Searches lessons and shows dropdown suggestions (search-as-you-type)
         searchLessonsWithSuggestions: function () {
-            // If search query is empty, clear suggestions and search results
             if (!this.searchQuery || this.searchQuery.trim() === '') {
                 this.searchSuggestions = [];
                 this.searchCompleted = false;
@@ -303,13 +278,10 @@ var app = new Vue({
                 return;
             }
 
-            // Store current query to check if it changed during fetch
             var currentQuery = this.searchQuery;
-
-            // Show suggestions panel when typing
             this.showSuggestions = true;
 
-            // Call backend search API for suggestions
+            // Fetch search results from backend
             fetch(this.apiURL + '/search?q=' + encodeURIComponent(this.searchQuery))
                 .then(function (response) {
                     if (!response.ok) {
@@ -318,7 +290,6 @@ var app = new Vue({
                     return response.json();
                 })
                 .then(function (data) {
-                    // Only update if query hasn't changed
                     if (this.searchQuery === currentQuery) {
                         this.searchSuggestions = data.slice(0, 5);
                         this.searchResults = data;
@@ -334,18 +305,24 @@ var app = new Vue({
                     }
                 }.bind(this));
         },
+
+        // Selects a suggestion from dropdown and views lesson
         selectSuggestion: function (lesson) {
             this.searchQuery = lesson.subject;
             this.searchSuggestions = [];
             this.showSuggestions = false;
             this.viewLesson(lesson);
         },
+
+        // Hides suggestions dropdown with delay
         hideSuggestionsDelayed: function () {
             var self = this;
             setTimeout(function () {
                 self.showSuggestions = false;
             }, 200);
         },
+
+        // Clears search query and results
         clearSearch: function () {
             this.searchQuery = '';
             this.searchSuggestions = [];
@@ -353,12 +330,16 @@ var app = new Vue({
             this.showSuggestions = false;
             this.searchResults = null;
         },
+
+        // Opens lesson detail page
         viewLesson: function (lesson) {
             this.selectedLesson = lesson;
             this.previousPage = this.currentPage;
             this.currentImageIndex = 0;
             this.currentPage = 'lessonDetail';
         },
+
+        // Adds lesson to cart and decreases available spaces
         addToCart: function (lesson) {
             if (lesson.spaces === 0) return;
 
@@ -384,6 +365,8 @@ var app = new Vue({
 
             lesson.spaces--;
         },
+
+        // Removes item from cart and restores spaces
         removeFromCart: function (index) {
             let item = this.cart[index];
 
@@ -396,15 +379,15 @@ var app = new Vue({
 
             this.cart.splice(index, 1);
 
-            // If cart is empty, go back to lessons page
             if (this.cart.length === 0) {
                 this.currentPage = 'lessons';
             }
         },
+
+        // Increases quantity of cart item
         increaseQuantity: function (index) {
             let item = this.cart[index];
 
-            // Find the lesson and check if there are available spaces
             for (let i = 0; i < this.lessons.length; i++) {
                 if (this.lessons[i]._id === item.id) {
                     if (this.lessons[i].spaces > 0) {
@@ -415,12 +398,13 @@ var app = new Vue({
                 }
             }
         },
+
+        // Decreases quantity of cart item
         decreaseQuantity: function (index) {
             let item = this.cart[index];
 
             if (item.quantity > 1) {
                 item.quantity--;
-                // Restore space to the lesson
                 for (let i = 0; i < this.lessons.length; i++) {
                     if (this.lessons[i]._id === item.id) {
                         this.lessons[i].spaces++;
@@ -429,6 +413,8 @@ var app = new Vue({
                 }
             }
         },
+
+        // Gets available spaces for a lesson by ID
         getAvailableSpaces: function (itemId) {
             for (let i = 0; i < this.lessons.length; i++) {
                 if (this.lessons[i]._id === itemId) {
@@ -437,6 +423,8 @@ var app = new Vue({
             }
             return 0;
         },
+
+        // Submits order to backend and updates lesson spaces
         checkout: function () {
             let orderData = {
                 name: this.checkoutInfo.name,
@@ -451,7 +439,7 @@ var app = new Vue({
                 orderData.spaces.push(this.cart[i].quantity);
             }
 
-            // POST to backend (4%)
+            // POST order to backend
             fetch(this.apiURL + '/orders', {
                 method: 'POST',
                 headers: {
@@ -468,8 +456,7 @@ var app = new Vue({
                 .then(function (data) {
                     console.log('Order submitted:', data);
 
-                    // Update lesson spaces in backend (3%)
-                    // For EACH item in cart, update the spaces
+                    // PUT to update lesson spaces in backend
                     let updatePromises = [];
 
                     for (let i = 0; i < this.cart.length; i++) {
@@ -479,12 +466,8 @@ var app = new Vue({
                         });
 
                         if (lesson) {
-                            // Calculate NEW spaces (current spaces is already reduced in frontend)
                             let newSpaces = lesson.spaces;
 
-                            console.log(`Updating lesson ${item.id}: spaces = ${newSpaces}`);
-
-                            // Create update promise
                             let updatePromise = fetch(this.apiURL + '/lessons/' + item.id, {
                                 method: 'PUT',
                                 headers: {
@@ -503,7 +486,6 @@ var app = new Vue({
                         }
                     }
 
-                    // Wait for all updates to complete
                     return Promise.all(updatePromises);
                 }.bind(this))
                 .then(function () {
@@ -520,8 +502,9 @@ var app = new Vue({
                     alert('Checkout failed. Please try again.');
                 });
         },
+
+        // Updates lesson spaces in backend (PUT) - for testing
         updateLessonSpaces: function (lessonId, newSpaces) {
-            // PUT to update spaces (3%)
             fetch(this.apiURL + '/lessons/' + lessonId, {
                 method: 'PUT',
                 headers: {
@@ -542,8 +525,9 @@ var app = new Vue({
                     console.error('Error updating lesson spaces:', error);
                 });
         },
+
+        // Fetches all lessons from backend (GET)
         fetchLessons: function () {
-            // GET lessons from backend (3%)
             this.isLoading = true;
             fetch(this.apiURL + '/lessons')
                 .then(function (response) {
@@ -562,59 +546,16 @@ var app = new Vue({
                     this.isLoading = false;
                 }.bind(this));
         },
-        enableProfileEdit: function () {
-            this.userProfileBackup = JSON.parse(JSON.stringify(this.userProfile));
-            this.profileEditMode = true;
-        },
-        cancelProfileEdit: function () {
-            this.userProfile = JSON.parse(JSON.stringify(this.userProfileBackup));
-            this.profileEditMode = false;
-        },
-        saveProfile: function () {
-            if (!this.canSaveProfile) {
-                return;
-            }
 
-            localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
-            this.profileEditMode = false;
-
-            alert('Profile updated successfully!');
-        },
-        changePassword: function () {
-            if (!this.canChangePassword) {
-                return;
-            }
-
-            console.log('Password changed successfully');
-            alert('Password updated successfully!');
-
-            this.passwordChange.current = '';
-            this.passwordChange.new = '';
-            this.passwordChange.confirm = '';
-        },
-        saveSettings: function () {
-            localStorage.setItem('userSettings', JSON.stringify(this.settings));
-            alert('Settings saved successfully!');
-        },
-        resetSettings: function () {
-            this.settings = {
-                emailNotifications: true,
-                pushNotifications: false,
-                marketingEmails: false,
-                profileVisibility: true,
-                showOnlineStatus: true,
-                language: 'en',
-                timezone: 'GMT'
-            };
-            localStorage.setItem('userSettings', JSON.stringify(this.settings));
-            alert('Settings reset to default!');
-        },
+        // Starts automatic slideshow on home page
         startSlideshow: function () {
             var self = this;
             this.slideshowInterval = setInterval(function () {
                 self.currentSlide = (self.currentSlide + 1) % 4;
             }, 4000);
         },
+
+        // Stops slideshow interval
         stopSlideshow: function () {
             if (this.slideshowInterval) {
                 clearInterval(this.slideshowInterval);
@@ -622,24 +563,21 @@ var app = new Vue({
         }
     },
     created: function () {
-        // Fetch lessons from backend on app load
+        // Fetch lessons on app load
         this.fetchLessons();
 
+        // Load saved theme preference
         let savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             this.isDarkMode = true;
             document.documentElement.setAttribute('data-theme', 'dark');
         }
 
-        let savedSettings = localStorage.getItem('userSettings');
-        if (savedSettings) {
-            this.settings = JSON.parse(savedSettings);
-        }
-
         // Initialize sidebar state
         this.handleResize();
         window.addEventListener('resize', this.handleResize);
 
+        // Start slideshow
         this.startSlideshow();
     },
     beforeDestroy: function () {
