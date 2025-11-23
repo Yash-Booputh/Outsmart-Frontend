@@ -235,6 +235,8 @@ var app = new Vue({
             this.filterLocations = [];
             this.filterSeatsOptions = [];
             this.filterMinSeats = 0;
+            this.sortAttribute = 'subject';
+            this.sortOrder = 'ascending';
         },
         getImageUrl: function (imageName) {
             // Returns the full URL for a lesson image from the backend
