@@ -13,7 +13,7 @@
 <body>
     <div id="app" v-cloak>
 
-        <!-- ==================== SIDEBAR NAVIGATION ==================== -->
+        <!--SIDEBAR NAVIGATION-->
         <div class="sidebar" v-bind:class="{'collapsed': sidebarCollapsed}">
             <!-- Logo -->
             <div class="logo" v-on:click="navigateTo('home')" style="cursor: pointer;">
@@ -64,10 +64,10 @@
             </button>
         </div>
 
-        <!-- ==================== MAIN CONTENT AREA ==================== -->
+        <!--MAIN CONTENT AREA-->
         <div class="main-content" v-bind:class="{'sidebar-collapsed': sidebarCollapsed}">
 
-            <!-- ==================== TOP ACTION BAR (Search & Theme Toggle) ==================== -->
+            <!--TOP ACTION BAR-->
             <div class="top-action-bar">
                 <!-- Search Box with Suggestions -->
                 <div class="header-search-container">
@@ -108,7 +108,7 @@
                 </button>
             </div>
 
-            <!-- ==================== HOME PAGE ==================== -->
+            <!--HOME PAGE-->
             <div v-if="currentPage === 'home'" class="page">
 
                 <!-- Hero Section -->
@@ -283,7 +283,7 @@
                 </div>
             </div>
 
-            <!-- ==================== ALL LESSONS PAGE ==================== -->
+            <!--ALL LESSONS PAGE-->
             <div v-if="currentPage === 'lessons'" class="page">
                 <h2 class="mb-4">All Lessons
                     <span class="badge rounded-pill available-badge ms-2" style="top: -2px;">
@@ -390,7 +390,7 @@
                     </div>
                 </div>
 
-                <!-- Lesson Cards (all filtered/sorted) - uses v-for -->
+                <!-- Lesson Cards -->
                 <div class="row g-4" v-else>
                     <div class="col-lg-4 col-md-6" v-for="lesson in sortedLessons" v-bind:key="lesson.id">
                         <div class="card lesson-card border-0 shadow-sm h-100 clickable-card" v-on:click="viewLesson(lesson)">
@@ -435,7 +435,7 @@
                 </div>
             </div>
 
-            <!-- ==================== LESSON DETAIL PAGE ==================== -->
+            <!--LESSON DETAIL PAGE-->
             <div v-if="currentPage === 'lessonDetail'" class="page">
                 <h2 class="mb-4">More Details</h2>
 
@@ -538,7 +538,7 @@
                 </div>
             </div>
 
-            <!-- ==================== SHOPPING CART PAGE ==================== -->
+            <!--SHOPPING CART PAGE-->
             <div v-if="currentPage === 'cart'" class="page">
                 <h2 class="mb-4">Shopping Cart</h2>
 
@@ -660,7 +660,7 @@
                 </div>
             </div>
 
-            <!-- ==================== ABOUT US PAGE ==================== -->
+            <!--ABOUT US PAGE-->
             <div v-if="currentPage === 'about'" class="page">
                 <h2 class="mb-4">About Us</h2>
 
@@ -739,7 +739,7 @@
                 </div>
             </div>
 
-            <!-- ==================== REVIEWS PAGE ==================== -->
+            <!--REVIEWS PAGE-->
             <div v-if="currentPage === 'review'" class="page">
                 <h2 class="text-center mb-4 fw-bold">What Parents Say</h2>
                 <div class="row g-4">
@@ -855,7 +855,7 @@
                 </div>
             </div>
 
-            <!-- ==================== FOOTER ==================== -->
+            <!--FOOTER-->
             <footer class="app-footer">
                 <!-- Left - Contact Info -->
                 <div class="footer-left">
@@ -909,7 +909,7 @@
 
         </div>
 
-        <!-- ==================== ORDER CONFIRMATION MODAL ==================== -->
+        <!--ORDER CONFIRMATION MODAL-->
         <div v-if="orderConfirmed" v-cloak class="modal-backdrop-custom" v-on:click="orderConfirmed = false">
             <div class="modal-dialog modal-dialog-centered" v-on:click.stop>
                 <div class="modal-content border-0 shadow-lg" style="background: white; border-radius: 16px;">

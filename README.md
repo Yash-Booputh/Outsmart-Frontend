@@ -41,10 +41,13 @@ The Frontend of the website was deployed through GitHub Pages on the following l
 
 ### API Integration
 Uses fetch to:
-- Load lesson data from MongoDB Database (GET)
-- Submit orders via POST and save in MongoDB database
-- Trigger PUT requests that update available lesson spaces after checkout
-- Search lessons via backend API
+
+| Description | Method | Endpoint | Purpose |
+|-------------|--------|----------|---------|
+| Load lesson data from MongoDB Database | GET | `/api/lessons` | Fetch all available lessons |
+| Submit orders via POST and save in MongoDB database | POST | `/api/orders` | Create new orders |
+| Trigger PUT requests that update available lesson spaces after checkout | PUT | `/api/lessons/{id}` | Update lesson availability |
+| Search for specific lessons in the database | GET | `/api/search?q={query}` | Search lessons by keyword |
 
 ## Technologies Used
 - Vue.js 2 (CDN version)
