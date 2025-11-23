@@ -70,4 +70,4 @@ frontend/
 
 - **Live Demo (GitHub Pages):** https://yash-booputh.github.io/Outsmart-Frontend/
 
-- **Backend API Render.com:** https://outsmart-backend-osm4.onrender.com/api/lessons
+- **Backend API Render.com /lessons:** https://outsmart-backend-osm4.onrender.com/api/lessons
