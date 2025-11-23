@@ -50,7 +50,6 @@ Uses fetch to:
 - Vue.js 2 (CDN version)
 - HTML, CSS, JavaScript
 - Bootstrap
-- Font Awesome
 - Fully client-side, interacts with backend via REST APIs
 
 ## Project Structure
@@ -65,6 +64,10 @@ frontend/
 ```
 
 ## Links
-- **GitHub Repository:** https://github.com/Yash-Booputh/Outsmart-Frontend.git
+- **GitHub Frontend Repository:** https://github.com/Yash-Booputh/Outsmart-Frontend.git
+
+- **GitHub Backend Repository:** https://github.com/Yash-Booputh/Outsmart-Backend.git
+
 - **Live Demo (GitHub Pages):** https://yash-booputh.github.io/Outsmart-Frontend/
-- **Backend API:** https://outsmart-backend-osm4.onrender.com/api/lessons
+
+- **Backend API Render.com:** https://outsmart-backend-osm4.onrender.com/api/lessons
