@@ -53,14 +53,10 @@ var app = new Vue({
         previousPage: 'home',
         currentImageIndex: 0,
 
-        apiURL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-            ? 'http://localhost:3000/api'
-            : 'https://outsmart-backend-osm4.onrender.com/api',
+        apiURL: 'https://outsmart-backend-osm4.onrender.com/api',
 
         // Base URL for images (static files from backend)
-        imageBaseURL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-            ? 'http://localhost:3000/images'
-            : 'https://outsmart-backend-osm4.onrender.com/images',
+        imageBaseURL: 'https://outsmart-backend-osm4.onrender.com/images',
 
         // Default includes for lessons without includes array
         defaultIncludes: [
@@ -229,22 +225,7 @@ var app = new Vue({
         },
         lessonDescription: function () {
             if (!this.selectedLesson) return '';
-
-            let descriptions = {
-                'Math': 'Master the fundamentals of mathematics! From algebra to calculus, develop strong problem-solving skills and logical thinking in an engaging, supportive environment.',
-                'English': 'Enhance your language skills through literature, creative writing, and critical analysis. Build confidence in communication and expression.',
-                'Music': 'Discover the joy of music! Learn to read notation, play instruments, and understand music theory while developing your creative expression.',
-                'Science': 'Explore the wonders of the natural world through hands-on experiments and discovery. Build a foundation in scientific inquiry and critical thinking.',
-                'Art': 'Unleash your creativity! Learn various artistic techniques, from drawing to painting, and develop your unique artistic voice.',
-                'History': 'Journey through time and explore the events that shaped our world. Develop critical thinking through analyzing historical sources and perspectives.',
-                'Geography': 'Discover our world! Learn about landscapes, cultures, and environmental systems while developing spatial awareness and global understanding.',
-                'PE': 'Get active and healthy! Develop physical fitness, teamwork skills, and sportsmanship through various sports and physical activities.',
-                'Drama': 'Step into the spotlight! Build confidence, creativity, and communication skills through theatrical performance and improvisation.',
-                'IT': 'Navigate the digital world! Learn programming, digital literacy, and technology skills essential for the modern age.',
-                'French': 'Bonjour! Start your journey into the French language and culture. Learn practical conversation skills, vocabulary, and grammar in a lively, interactive setting.'
-            };
-
-            return descriptions[this.selectedLesson.subject] || 'Join us for an engaging and educational experience! Our expert instructors will guide you through comprehensive lessons designed to help you achieve your learning goals.';
+            return this.selectedLesson.description || 'Join us for an engaging and educational experience!';
         }
     },
     methods: {
@@ -554,21 +535,7 @@ var app = new Vue({
                 }.bind(this))
                 .catch(function (error) {
                     console.error('Error fetching lessons:', error);
-                    // Fallback to hardcoded data when backend is not available (e.g., on GitHub Pages before AWS deployment)
-                    this.lessons = [
-                        { _id: '1', subject: 'Mathematics', location: 'Port Louis', price: 1500, spaces: 5, icon: 'fas fa-calculator', image: 'math.jpg', rating: 4 },
-                        { _id: '2', subject: 'English Literature', location: 'Curepipe', price: 1200, spaces: 5, icon: 'fas fa-book', image: 'english.jpg', rating: 5 },
-                        { _id: '3', subject: 'Music Theory', location: 'Quatre Bornes', price: 1800, spaces: 5, icon: 'fas fa-music', image: 'music.jpg', rating: 4 },
-                        { _id: '4', subject: 'Science', location: 'Rose Hill', price: 1600, spaces: 5, icon: 'fas fa-flask', image: 'science.jpg', rating: 5 },
-                        { _id: '5', subject: 'Art & Design', location: 'Vacoas', price: 1400, spaces: 5, icon: 'fas fa-palette', image: 'art.jpg', rating: 4 },
-                        { _id: '6', subject: 'History', location: 'Beau Bassin', price: 1100, spaces: 5, icon: 'fas fa-landmark', image: 'history.jpg', rating: 3 },
-                        { _id: '7', subject: 'Geography', location: 'Mahebourg', price: 1000, spaces: 5, icon: 'fas fa-globe', image: 'geography.jpg', rating: 4 },
-                        { _id: '8', subject: 'Physical Education', location: 'Flic en Flac', price: 900, spaces: 5, icon: 'fas fa-running', image: 'pe.jpg', rating: 5 },
-                        { _id: '9', subject: 'Drama & Theatre', location: 'Grand Baie', price: 1300, spaces: 5, icon: 'fas fa-theater-masks', image: 'drama.jpg', rating: 4 },
-                        { _id: '10', subject: 'Computer Science', location: 'Ebene', price: 2000, spaces: 5, icon: 'fas fa-laptop-code', image: 'it.jpg', rating: 5 },
-                        { _id: '11', subject: 'French Language', location: 'Port Louis', price: 1400, spaces: 5, icon: 'fas fa-language', image: 'french.jpg', rating: 4 },
-                        { _id: '12', subject: 'Swimming', location: 'Pereybere', price: 1700, spaces: 5, icon: 'fas fa-swimmer', image: 'swimming.jpg', rating: 5 }
-                    ];
+                    this.lessons = [];
                     this.isLoading = false;
                 }.bind(this));
         },

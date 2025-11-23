@@ -1,3 +1,7 @@
+[v-cloak] {
+    display: none !important;
+}
+
 :root {
     --primary: #1f2937;
     --primary-dark: #111827;

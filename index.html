@@ -875,14 +875,14 @@
         </div>
 
         <!-- Order Confirmation Modal -->
-        <div v-if="orderConfirmed" class="modal-backdrop-custom" v-on:click="orderConfirmed = false">
+        <div v-if="orderConfirmed" v-cloak class="modal-backdrop-custom" v-on:click="orderConfirmed = false">
             <div class="modal-dialog modal-dialog-centered" v-on:click.stop>
-                <div class="modal-content border-0 shadow-lg">
+                <div class="modal-content border-0 shadow-lg" style="background: white;">
                     <div class="modal-body text-center p-5">
                         <div class="mb-4">
                             <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
                         </div>
-                        <h2 class="mb-3">Order Confirmed!</h2>
+                        <h2 class="mb-3" style="color: #111827;">Order Confirmed!</h2>
                         <p class="text-muted mb-4">Your order has been successfully submitted.</p>
                         <button class="btn btn-primary btn-lg px-5"
                             v-on:click="orderConfirmed = false; currentPage = 'home'">
