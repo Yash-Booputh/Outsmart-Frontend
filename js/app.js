@@ -73,7 +73,10 @@ var app = new Vue({
         // Search suggestions
         searchSuggestions: [],
         showSuggestions: false,
-        searchCompleted: false
+        searchCompleted: false,
+
+        // Search results (separate from lessons to not affect popular lessons)
+        searchResults: null
     },
     watch: {
         currentPage: function () {
@@ -81,8 +84,12 @@ var app = new Vue({
         }
     },
     computed: {
+        // Lessons to display on All Lessons page (uses search results if available)
+        displayLessons: function () {
+            return this.searchResults !== null ? this.searchResults : this.lessons;
+        },
         sortedLessons: function () {
-            let lessonsArray = this.lessons.slice();
+            let lessonsArray = this.displayLessons.slice();
             let self = this;
 
             // Apply filters
@@ -278,9 +285,9 @@ var app = new Vue({
             }
         },
         searchLessons: function () {
-            // If search query is empty, fetch all lessons
+            // If search query is empty, clear search results
             if (!this.searchQuery || this.searchQuery.trim() === '') {
-                this.fetchLessons();
+                this.searchResults = null;
                 return;
             }
 
@@ -293,7 +300,7 @@ var app = new Vue({
                     return response.json();
                 })
                 .then(function (data) {
-                    this.lessons = data;
+                    this.searchResults = data;
                 }.bind(this))
                 .catch(function (error) {
                     console.error('Error searching lessons:', error);
@@ -301,11 +308,11 @@ var app = new Vue({
                 });
         },
         searchLessonsWithSuggestions: function () {
-            // If search query is empty, clear suggestions and fetch all lessons
+            // If search query is empty, clear suggestions and search results
             if (!this.searchQuery || this.searchQuery.trim() === '') {
                 this.searchSuggestions = [];
                 this.searchCompleted = false;
-                this.fetchLessons();
+                this.searchResults = null;
                 return;
             }
 
@@ -319,7 +326,7 @@ var app = new Vue({
                 })
                 .then(function (data) {
                     this.searchSuggestions = data.slice(0, 5); // Limit to 5 suggestions
-                    this.lessons = data;
+                    this.searchResults = data;
                     this.searchCompleted = true;
                 }.bind(this))
                 .catch(function (error) {
@@ -345,7 +352,7 @@ var app = new Vue({
             this.searchSuggestions = [];
             this.searchCompleted = false;
             this.showSuggestions = false;
-            this.fetchLessons();
+            this.searchResults = null;
         },
         viewLesson: function (lesson) {
             this.selectedLesson = lesson;
