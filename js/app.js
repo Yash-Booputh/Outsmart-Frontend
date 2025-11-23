@@ -306,6 +306,9 @@ var app = new Vue({
             // Store current query to check if it changed during fetch
             var currentQuery = this.searchQuery;
 
+            // Show suggestions panel when typing
+            this.showSuggestions = true;
+
             // Call backend search API for suggestions
             fetch(this.apiURL + '/search?q=' + encodeURIComponent(this.searchQuery))
                 .then(function (response) {
@@ -320,6 +323,7 @@ var app = new Vue({
                         this.searchSuggestions = data.slice(0, 5);
                         this.searchResults = data;
                         this.searchCompleted = true;
+                        this.showSuggestions = true;
                     }
                 }.bind(this))
                 .catch(function (error) {
