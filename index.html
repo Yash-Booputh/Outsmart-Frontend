@@ -79,7 +79,7 @@
                                  v-for="suggestion in searchSuggestions"
                                  v-bind:key="suggestion._id"
                                  v-on:mousedown="selectSuggestion(suggestion)">
-                                <img v-bind:src="imagesURL + '/' + suggestion.image"
+                                <img v-bind:src="imageBaseURL + '/' + suggestion.image"
                                      v-bind:alt="suggestion.subject"
                                      class="suggestion-image">
                                 <div class="suggestion-info">
